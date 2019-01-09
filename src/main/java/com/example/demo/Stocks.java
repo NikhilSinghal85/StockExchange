@@ -2,7 +2,7 @@ package com.example.demo;
 
 
 /**
- * This POGO for sending JSON response to client at periodic interval based on input provided
+ * This POJO for sending JSON response to client at periodic interval based on input provided
  * @author nikhil.singhal
  *
  */

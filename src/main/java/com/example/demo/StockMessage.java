@@ -2,7 +2,7 @@ package com.example.demo;
 
 
 /**
- * This is the POGO for JSON mapping of all incoming data from client.
+ * This is the POJO for JSON mapping of all incoming data from client.
  * @author nikhil.singhal
  *
  */
