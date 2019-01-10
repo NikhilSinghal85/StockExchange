@@ -1,6 +1,5 @@
 package com.example.demo;
 
-import java.util.Collection;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -47,31 +46,15 @@ public class BSE implements StockExchange {
 	
 	@PostConstruct
 	private void dataLoad() {
-		List<Map<String, Object>> lst = jdbcTemplate.queryForList("Select * from company where stocktype = 'BSE'");
-		Iterator<Map<String, Object>> itr = lst.iterator();
+		List<Company> lst = jdbcTemplate.query("Select * from company where stocktype = 'BSE'", new CompanyRowMapper());
+		Iterator<Company> itr = lst.iterator();
 		while(itr.hasNext()) {
-			Map<String, Object> pp = itr.next();
-			Collection<Object> vv = pp.values();
-			Iterator<Object> itr2 = vv.iterator();
-			String key = null;
-			String val = null;
-			int count = 0;
-			while (itr2.hasNext()) {
-				if (count == 1) {
-					key = (String)itr2.next();
-				}
-				else if(count ==2) {
-					val = (String)itr2.next();
-				}
-				else {
-					itr2.next();
-				}
-				count++;
-				
-			}
-			myData.put(key.toLowerCase(), val);
+			Company c = itr.next(); 
+			myData.put(c.getName().toLowerCase(), c.getValue());
 			
 		}
 		
 	}
 }
+
+
