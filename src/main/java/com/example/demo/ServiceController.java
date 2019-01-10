@@ -1,7 +1,11 @@
 package com.example.demo;
 
 import java.text.DecimalFormat;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.util.Collection;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import javax.annotation.PostConstruct;
@@ -12,6 +16,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.web.servlet.support.SpringBootServletInitializer;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jms.annotation.EnableJms;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.SendTo;
@@ -42,6 +47,9 @@ public class ServiceController extends SpringBootServletInitializer {
 	@Autowired
 	private SimpMessageSendingOperations messagingTemplate;
 	
+	@Autowired
+	private JdbcTemplate jdbcTemplate;
+	
 	static boolean flag = false;
 	
 	private static Map<String, StockExchange> EXHANGE_REPOSITORY = new HashMap<>();
@@ -68,6 +76,7 @@ public class ServiceController extends SpringBootServletInitializer {
 			StockExchange se = EXHANGE_REPOSITORY.get(message.getName().toLowerCase().trim());
 			String val = se.getResult(message.getValue().toLowerCase().trim());
 			
+			registerUserRequest(message);
 			if (flag) {
 				flag = false;
 				try {
@@ -81,13 +90,13 @@ public class ServiceController extends SpringBootServletInitializer {
 				flag = true;
 			}
 	        
-	        
 	        Thread  rateThread=new Thread(){
 	        	   public void run() {
 	        	    DecimalFormat df = new DecimalFormat("#.####");
 	        	    while(flag)
 	        	    {
-	        	     double d=2+Math.random();   
+	        	    	
+	        	     double d=randomNumberGenerator();
 	        	     Stocks gg = new Stocks();
 	        	    	   gg.setContent(val + " "+df.format(d));
 	        	    	   messagingTemplate.convertAndSend("/topic/stocks", gg);
@@ -104,8 +113,23 @@ public class ServiceController extends SpringBootServletInitializer {
 		catch(NullPointerException e) {
 			logger.error("Invalid request made");
 		}
-
 	}
+	
+	
+	private double randomNumberGenerator() {
+		List<Map<String, Object>> generator = jdbcTemplate.queryForList("Select * from generator");
+		Collection<Object> val = generator.get(0).values();
+		String vv = val.toString();
+		String[] dd = vv.split(",");
+		return 2+Math.random() + ((Integer.parseInt(dd[1].trim())) * .001);
+	}
+	
+	private void registerUserRequest(StockMessage message) {
+		jdbcTemplate.update("INSERT INTO stockexchange.user (Timestamp, UserName, data) VALUES ( ?, ?, ?)"
+				,  LocalDateTime.now(), "Nikhil", message.getName() + " ::" + message.getValue()  );
+		
+	}
+	
 	
 	
 	//do later
