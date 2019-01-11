@@ -42,8 +42,14 @@ function sendName() {
 }
 
 function showStocks(message) {
-    $("#stocks").empty();
-    $("#stocks").append("<tr><td>" + message + "</td></tr>");
+	if (message.includes("NSE")) {
+		$("#stocks").empty();
+    	$("#stocks").append("<tr><td> " + message + "</td></tr>");
+    }
+    else {
+    	$("#stocks2").empty();
+    	$("#stocks2").append("<tr><td> &emsp;" + message + "</td></tr>");
+    }
 }
 
 $(function () {

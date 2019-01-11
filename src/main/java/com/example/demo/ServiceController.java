@@ -75,24 +75,11 @@ public class ServiceController extends SpringBootServletInitializer {
 			StockExchange se = EXHANGE_REPOSITORY.get(message.getName().toLowerCase().trim());
 			String val = se.getResult(message.getValue().toLowerCase().trim());
 			
-			registerUserRequest(message);
-			if (flag) {
-				flag = false;
-				try {
-					Thread.sleep(3000);
-				} catch (InterruptedException e) {
-					e.printStackTrace();
-				}
-				flag = true;
-			}
-			else {
-				flag = true;
-			}
 	        
 	        Thread  rateThread=new Thread(){
 	        	   public void run() {
 	        	    DecimalFormat df = new DecimalFormat("#.####");
-	        	    while(flag)
+	        	    while(true)
 	        	    {
 	        	    	
 	        	     double d=randomNumberGenerator();
@@ -124,6 +111,7 @@ public class ServiceController extends SpringBootServletInitializer {
 	}
 	
 	private void registerUserRequest(StockMessage message) {
+		logger.info("Entering user request in DB for tracking");
 		jdbcTemplate.update("INSERT INTO stockexchange.user (Timestamp, UserName, data) VALUES ( ?, ?, ?)"
 				,  LocalDateTime.now(), "Nikhil", message.getName() + " ::" + message.getValue()  );
 		
