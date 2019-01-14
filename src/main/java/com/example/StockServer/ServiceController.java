@@ -1,4 +1,4 @@
-package com.example.demo;
+package com.example.StockServer;
 
 import java.text.DecimalFormat;
 import java.time.LocalDateTime;
@@ -15,7 +15,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.web.servlet.support.SpringBootServletInitializer;
-import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.context.annotation.ComponentScan;
+import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.jms.annotation.EnableJms;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.SendTo;
@@ -23,6 +24,9 @@ import org.springframework.messaging.simp.SimpMessageSendingOperations;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+
+import com.example.StockExchange.GenericStock;
+import com.example.StockExchange.StockExchange;
 
 
 /**
@@ -33,21 +37,19 @@ import org.springframework.web.bind.annotation.RestController;
 
 
 @SpringBootApplication
+@ComponentScan({ "com.example.*"})
 @EnableJms
 @RestController
 public class ServiceController extends SpringBootServletInitializer {
 	
 	@Autowired
-	private NSE nse;
-	
-	@Autowired
-	private BSE bse;
+	private GenericStock genericStock;
 	
 	@Autowired
 	private SimpMessageSendingOperations messagingTemplate;
 	
 	@Autowired
-	private JdbcTemplate jdbcTemplate;
+	private NamedParameterJdbcTemplate  namedParameterJdbcTemplate;
 	
 	static boolean flag = false;
 	
@@ -57,8 +59,7 @@ public class ServiceController extends SpringBootServletInitializer {
 	
 	@PostConstruct
 	private void loadAvailableStock() {
-		EXHANGE_REPOSITORY.put("nse", nse);
-		EXHANGE_REPOSITORY.put("bse", bse);
+		EXHANGE_REPOSITORY.put("genericStock", genericStock);
 	}
 	
 	public static void main(String[] args) {
@@ -69,32 +70,27 @@ public class ServiceController extends SpringBootServletInitializer {
 	@MessageMapping("/stock")
     @SendTo("/topic/stocks")
 	void getResult(StockMessage message) {
-		
-		logger.info("This is the log ::");
 		try {
-			StockExchange se = EXHANGE_REPOSITORY.get(message.getName().toLowerCase().trim());
-			String val = se.getResult(message.getValue().toLowerCase().trim());
+			String val = genericStock.getResult(message.getName().toLowerCase().trim(), 
+					message.getValue().toLowerCase().trim());
+			registerUserRequest(message);
 			
+			Thread t = new Thread(() -> {
+				DecimalFormat df = new DecimalFormat("#.####");
+				while(true)
+				{
+					double d=randomNumberGenerator();
+					Stocks gg = new Stocks();
+					gg.setContent(val + " "+df.format(d));
+					messagingTemplate.convertAndSend("/topic/stocks", gg);
+					try {
+						Thread.sleep(3000);
+					} catch (InterruptedException e) {      
+					}
+				}
+			});
+			t.start();
 	        
-	        Thread  rateThread=new Thread(){
-	        	   public void run() {
-	        	    DecimalFormat df = new DecimalFormat("#.####");
-	        	    while(true)
-	        	    {
-	        	    	
-	        	     double d=randomNumberGenerator();
-	        	     Stocks gg = new Stocks();
-	        	    	   gg.setContent(val + " "+df.format(d));
-	        	    	   messagingTemplate.convertAndSend("/topic/stocks", gg);
-	        	     try {
-	        	      sleep(3000);
-	        	     } catch (InterruptedException e) {      
-	        	     }
-	        	    }
-	        	   };
-	        	  } ;
-	        	  rateThread.start();
-			
 		}
 		catch(NullPointerException e) {
 			logger.error("Invalid request made");
@@ -103,7 +99,8 @@ public class ServiceController extends SpringBootServletInitializer {
 	
 	
 	private double randomNumberGenerator() {
-		List<Map<String, Object>> generator = jdbcTemplate.queryForList("Select * from generator");
+		Map<String, Object> namedParameters = new HashMap<>();
+		List<Map<String, Object>> generator = namedParameterJdbcTemplate.queryForList("Select * from generator", namedParameters);
 		Collection<Object> val = generator.get(0).values();
 		String vv = val.toString();
 		String[] dd = vv.split(",");
@@ -112,8 +109,19 @@ public class ServiceController extends SpringBootServletInitializer {
 	
 	private void registerUserRequest(StockMessage message) {
 		logger.info("Entering user request in DB for tracking");
-		jdbcTemplate.update("INSERT INTO stockexchange.user (Timestamp, UserName, data) VALUES ( ?, ?, ?)"
-				,  LocalDateTime.now(), "Nikhil", message.getName() + " ::" + message.getValue()  );
+		
+		String query = "INSERT INTO stockexchange.user (Timestamp, UserName, Data) VALUES (:Timestamp,:UserName,:Data)";
+		Map<String, Object> namedParameters = new HashMap<>();
+		namedParameters.put("Timestamp", LocalDateTime.now());
+		namedParameters.put("UserName", "Nikhil");
+		namedParameters.put("Data", message.getName() + " ::" + message.getValue() );
+		try {
+		namedParameterJdbcTemplate.update(query, namedParameters);
+		}
+		catch (Exception e) {
+			System.out.println("Exception :: " + e.getMessage());
+		}
+	
 		
 	}
 	
@@ -128,7 +136,14 @@ public class ServiceController extends SpringBootServletInitializer {
 	
 	
 	
-	
+//	@Bean
+//	  public static PropertySourcesPlaceholderConfigurer properties() {
+//	      PropertySourcesPlaceholderConfigurer propertySourcesPlaceholderConfigurer = new PropertySourcesPlaceholderConfigurer();
+//	      YamlPropertiesFactoryBean yaml = new YamlPropertiesFactoryBean();
+//	      yaml.setResources(new ClassPathResource("appConfig.yml"));
+//	      propertySourcesPlaceholderConfigurer.setProperties(yaml.getObject());
+//	      return propertySourcesPlaceholderConfigurer;
+//	  }
 	
 	
 	

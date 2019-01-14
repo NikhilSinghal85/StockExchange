@@ -1,4 +1,4 @@
-package com.example.demo;
+package com.example.StockExchange;
 
 
 /**
@@ -9,6 +9,6 @@ package com.example.demo;
 
 public interface StockExchange {
 	
-	 String getResult(String vv);
+	 String getResult(String nn, String vv);
 
 }

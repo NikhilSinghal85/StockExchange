@@ -1,4 +1,4 @@
-package com.example.demo;
+package com.example.StockExchange;
 
 /**
  * POJO class for database table Company
@@ -7,9 +7,13 @@ package com.example.demo;
  */
 public class Company {
 
-	
+
 	private String name;
-	
+
+	private String value;
+
+	private String stockType;
+
 	public String getName() {
 		return name;
 	}
@@ -34,9 +38,7 @@ public class Company {
 		this.stockType = stockType;
 	}
 
-	private String value;
-	
-	private String stockType;
-	
-	
+
+
+
 }

@@ -1,4 +1,4 @@
-package com.example.demo;
+package com.example.StockExchange;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;

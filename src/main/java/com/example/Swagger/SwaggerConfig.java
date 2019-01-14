@@ -1,4 +1,4 @@
-package com.example.demo;
+package com.example.Swagger;
 
 import java.util.Arrays;
 import java.util.HashSet;
