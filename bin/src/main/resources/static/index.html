@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Stock Application</title>
+    <link href="/webjars/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link href="/main.css" rel="stylesheet">
+    <script src="/webjars/jquery/jquery.min.js"></script>
+    <script src="/webjars/sockjs-client/sockjs.min.js"></script>
+    <script src="/webjars/stomp-websocket/stomp.min.js"></script>
+    <script src="/app.js"></script>
+</head>
+<body>
+<noscript><h2 style="color: #ff0000">Seems your browser doesn't support Javascript! Websocket relies on Javascript being
+    enabled. Please enable
+    Javascript and reload this page!</h2></noscript>
+<div id="main-content" class="container">
+    <div class="row">
+        <div class="col-md-6">
+            <form class="form-inline">
+                <div class="form-group">
+                    <label for="name">What is your Stock?</label>
+                    <input type="text" id="name" class="form-control" placeholder="Your Stock here...">
+                    <input type="text" id="value" class="form-control" placeholder="Company Name...">
+                </div>
+                <button id="send" class="btn btn-default" type="submit">Send</button>
+            </form>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <table id="conversation" class="table table-striped">
+                <thead>
+                <tr>
+                    <th>Real Time NSE Stock Price</th>
+                </tr>
+                </thead>
+                <tbody id="stocks">
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-18">
+            <table id="conversation" class="table table-striped">
+                <thead>
+                <tr>
+                    <th>&emsp; Real Time BSE Stock Price</th>
+                </tr>
+                </thead>
+                <tbody id="stocks2">
+                </tbody>
+            </table>
+        </div>
+    </div>
+    
+    
+    
+</div>
+</body>
+</html>

@@ -16,9 +16,9 @@ public class CompanyRowMapper implements RowMapper<Company>
     @Override
     public Company mapRow(ResultSet rs, int rowNum) throws SQLException {
     	Company company = new Company();
-    	company.setName(rs.getString("Name"));
-    	company.setValue(rs.getString("value"));
-    	company.setStockType(rs.getString("StockType"));
+    	company.setName(rs.getString("company_name"));
+    	company.setValue(rs.getString("company_value"));
+    	company.setStockType(rs.getString("company_stock"));
         return company;
     }
 }

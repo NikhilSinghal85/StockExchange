@@ -1,7 +1,5 @@
 var stompClient = null;
 var sub = null;
-var sub2 = null;
-var sub3 = null;
 
 function setConnected(connected) {
     $("#connect").prop("disabled", connected);
@@ -21,9 +19,8 @@ function connect() {
     stompClient.connect({}, function (frame) {
         setConnected(true);
         console.log('Connected: ' + frame);
-        sendName();
         this.sub = stompClient.subscribe('/topic/stocks', function (stocks) {
-            showStocks(stocks.body);
+            showStocks(JSON.parse(stocks.body).content);
         });
     });
 }
@@ -45,20 +42,15 @@ function sendName() {
 }
 
 function showStocks(message) {
+	if (message.includes("NSE")) {
 		$("#stocks").empty();
-    	$("#stocks").append("<tr><td>NSE Idea  :: " +JSON.parse(message).nse_Idea + "</td></tr>");
+    	$("#stocks").append("<tr><td> " + message + "</td></tr>");
+    }
+    else {
     	$("#stocks2").empty();
-    	$("#stocks2").append("<tr><td>NSE Tata  :: " + JSON.parse(message).nse_Tata + "</td></tr>");
-    	$("#stocks3").empty();
-    	$("#stocks3").append("<tr><td>NSE Coal India  :: " + JSON.parse(message).nse_CoalIndia + "</td></tr>");
-    	$("#stocks4").empty();
-    	$("#stocks4").append("<tr><td>BSE Idea  :: " + JSON.parse(message).bse_Idea + "</td></tr>");
-    	$("#stocks5").empty();
-    	$("#stocks5").append("<tr><td>BSE Tata  :: " + JSON.parse(message).bse_Tata + "</td></tr>");
-    	$("#stocks6").empty();
-    	$("#stocks6").append("<tr><td>BSE Coal India  :: " + JSON.parse(message).bse_CoalIndia + "</td></tr>");
+    	$("#stocks2").append("<tr><td> &emsp;" + message + "</td></tr>");
+    }
 }
-
 
 $(function () {
     $("form").on('submit', function (e) {

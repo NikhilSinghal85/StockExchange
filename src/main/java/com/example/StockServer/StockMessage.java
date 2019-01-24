@@ -8,31 +8,46 @@ package com.example.StockServer;
  */
 public class StockMessage {
 
-    private String name;
-    
-    
-    private String value;
+	private String user;
 
-    public String getValue() {
-		return value;
+
+	private String exchange;
+
+	private String stock;
+
+	private Integer number;
+
+	public String getUser() {
+		return user;
 	}
 
-	public void setValue(String value) {
-		this.value = value;
+	public void setUser(String user) {
+		this.user = user;
 	}
 
-	public StockMessage() {
-    }
+	public String getExchange() {
+		return exchange;
+	}
 
-    public StockMessage(String name) {
-        this.name = name;
-    }
+	public void setExchange(String exchange) {
+		this.exchange = exchange;
+	}
 
-    public String getName() {
-        return name;
-    }
+	public String getStock() {
+		return stock;
+	}
 
-    public void setName(String name) {
-        this.name = name;
-    }
+	public void setStock(String stock) {
+		this.stock = stock;
+	}
+
+
+	public Integer getNumber() {
+		return number;
+	}
+
+	public void setNumber(Integer number) {
+		this.number = number;
+	}
+
 }

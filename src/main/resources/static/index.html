@@ -13,19 +13,13 @@
 <noscript><h2 style="color: #ff0000">Seems your browser doesn't support Javascript! Websocket relies on Javascript being
     enabled. Please enable
     Javascript and reload this page!</h2></noscript>
-<div id="main-content" class="container">
+    <div id="main-content" class="container">
     <div class="row">
         <div class="col-md-6">
-            <form class="form-inline">
-                <div class="form-group">
-                    <label for="name">What is your Stock?</label>
-                    <input type="text" id="name" class="form-control" placeholder="Your Stock here...">
-                    <input type="text" id="value" class="form-control" placeholder="Company Name...">
-                </div>
-                <button id="send" class="btn btn-default" type="submit">Send</button>
-            </form>
+                    <label for="name">Stock For Exchange NSE and BSE</label>
         </div>
     </div>
+<div id="main-content" class="container">
     <div class="row">
         <div class="col-md-12">
             <table id="conversation" class="table table-striped">
@@ -36,6 +30,11 @@
                 </thead>
                 <tbody id="stocks">
                 </tbody>
+                <tbody id="stocks2">
+                </tbody>
+                <tbody id="stocks3">
+                </tbody>
+                
             </table>
         </div>
     </div>
@@ -47,14 +46,44 @@
                     <th>&emsp; Real Time BSE Stock Price</th>
                 </tr>
                 </thead>
-                <tbody id="stocks2">
+                <tbody id="stocks4">
+                </tbody>
+                <tbody id="stocks5">
+                </tbody>
+                <tbody id="stocks6">
                 </tbody>
             </table>
         </div>
     </div>
-    
-    
-    
+    <form>
+    		<h1>Please Sign In</h1>
+                    <div class="form-group">
+                        <input type="text" name="username" id="username" class="form-control input-lg"
+                               placeholder="UserName" required="true" autofocus="true"/>
+                    </div>
+                    <div class="form-group">
+                        <input type="password" name="password" id="password" class="form-control input-lg"
+                               placeholder="Password" required="true"/>
+                    </div>
+        Login to Buy/Sell:<br>
+         <button id="send" class="btn btn-default" type="submit" onclick="callREST()">Sign In </button>
+    </form>
+    <div id="response"></div>
+
+    <script>
+        function callREST() {
+            var xhttp = new XMLHttpRequest();
+            xhttp.onreadystatechange = function() {
+                if (this.readyState == 4 && this.status == 200) {
+                    document.getElementById("response").innerHTML = this.responseText;
+                }
+            };
+            xhttp.open("GET", "http://localhost:8080/validate", true);
+            xhttp.setRequestHeader("Content-type", "application/json");
+            xhttp.send(JSON.stringify({ "username": "hello@user.com", "password": "2pm" }));
+            
+        }
+    </script>
 </div>
 </body>
 </html>

@@ -10,8 +10,18 @@ package com.example.StockServer;
 public class Stocks {
 
     private String content;
+    
+    private String message;
 
-    public Stocks() {
+    public String getMessage() {
+		return message;
+	}
+
+	public void setMessage(String message) {
+		this.message = message;
+	}
+
+	public Stocks() {
     }
 
     public Stocks(String content) {
