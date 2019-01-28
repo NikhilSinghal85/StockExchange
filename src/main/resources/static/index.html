@@ -78,9 +78,9 @@
                     document.getElementById("response").innerHTML = this.responseText;
                 }
             };
-            xhttp.open("GET", "http://localhost:8080/validate", true);
+            xhttp.open("GET", "http://localhost:8080/validate", true, "username" , "password");
             xhttp.setRequestHeader("Content-type", "application/json");
-            xhttp.send(JSON.stringify({ "username": "hello@user.com", "password": "2pm" }));
+            xhttp.send();
             
         }
     </script>
