@@ -7,23 +7,19 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.messaging.simp.SimpMessageSendingOperations;
+import org.springframework.stereotype.Component;
 
+
+@Component
 public class StockRateViewController {
-	
-private static StockRateViewController singelton = new StockRateViewController();
 	
 	private Logger logger = LoggerFactory.getLogger(StockRateViewController.class);
 	
 	@Autowired
 	private SimpMessageSendingOperations messagingTemplate;
 	
-	public static StockRateViewController getInstance() {
-		return singelton;
-	}
-	
-	private StockRateViewController() {
-		
-	}
+	@Autowired
+	private DaoImpl daoImpl;
 	
 	
 	@SendTo("/topic/stocks")
@@ -34,12 +30,12 @@ private static StockRateViewController singelton = new StockRateViewController()
 				DecimalFormat df = new DecimalFormat("#.####");
 				while(true)
 				{
-					double d1= DaoImpl.randomNumberGenerator();
-					double d2= DaoImpl.randomNumberGenerator();
-					double d3= DaoImpl.randomNumberGenerator();
-					double d4= DaoImpl.randomNumberGenerator();
-					double d5= DaoImpl.randomNumberGenerator();
-					double d6= DaoImpl.randomNumberGenerator();
+					double d1= daoImpl.randomNumberGenerator();
+					double d2= daoImpl.randomNumberGenerator();
+					double d3= daoImpl.randomNumberGenerator();
+					double d4= daoImpl.randomNumberGenerator();
+					double d5= daoImpl.randomNumberGenerator();
+					double d6= daoImpl.randomNumberGenerator();
 
 					StockUtility gg = new StockUtility();
 					gg.setNse_CoalIndia(df.format(d1));

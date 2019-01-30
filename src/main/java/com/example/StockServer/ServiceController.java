@@ -1,6 +1,5 @@
 package com.example.StockServer;
 
-import java.text.DecimalFormat;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -16,7 +15,6 @@ import org.springframework.boot.web.servlet.support.SpringBootServletInitializer
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.SendTo;
-import org.springframework.messaging.simp.SimpMessageSendingOperations;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -42,9 +40,12 @@ public class ServiceController extends SpringBootServletInitializer {
 	@Autowired
 	private GenericStock genericStock;
 	
-	@Autowired
-	private SimpMessageSendingOperations messagingTemplate;
 	
+	@Autowired
+	private DaoImpl daoImpl;
+	
+	@Autowired
+	private StockRateViewController stockRateViewController;
 	
 	private static Map<String, StockExchange> EXHANGE_REPOSITORY = new HashMap<>();
 	
@@ -64,39 +65,7 @@ public class ServiceController extends SpringBootServletInitializer {
     @SendTo("/topic/stocks")
 	void displayExchange() {
 		
-		try {
-
-			Thread t = new Thread(() -> {
-				DecimalFormat df = new DecimalFormat("#.####");
-				while(true)
-				{
-					double d1= DaoImpl.randomNumberGenerator();
-					double d2= DaoImpl.randomNumberGenerator();
-					double d3= DaoImpl.randomNumberGenerator();
-					double d4= DaoImpl.randomNumberGenerator();
-					double d5= DaoImpl.randomNumberGenerator();
-					double d6= DaoImpl.randomNumberGenerator();
-
-					StockUtility gg = new StockUtility();
-					gg.setNse_CoalIndia(df.format(d1));
-					gg.setNse_Idea(df.format(d2));
-					gg.setNse_Tata(df.format(d3));
-					gg.setBse_CoalIndia(df.format(d4));
-					gg.setBse_Idea(df.format(d5));
-					gg.setBse_Tata(df.format(d6));
-					messagingTemplate.convertAndSend("/topic/stocks", gg);
-					try {
-						Thread.sleep(3000);
-					} catch (InterruptedException e) {      
-					}
-				}
-			});
-			t.start();
-
-		}
-		catch(NullPointerException e) {
-			logger.error("Invalid request made");
-		}
+		stockRateViewController.refreshStockRate();
 		
 	}
 	
@@ -108,7 +77,7 @@ public class ServiceController extends SpringBootServletInitializer {
 		logger.info("purchasing stock");
 			// check if user have this stock available 
 			logger.info("Buying quantity::" + quantity);
-			String result = DaoImpl.getInstance().updateBuy(username,exchange,stock,quantity );
+			String result = daoImpl.updateBuy(username,exchange,stock,quantity );
 			return result;
 	}
 	
@@ -119,7 +88,7 @@ public class ServiceController extends SpringBootServletInitializer {
 	String sellStocks(@RequestParam("UserName") String username, @RequestParam("Exchange") String exchange, @RequestParam("Stock") String stock,
 			@RequestParam("Quantity") Integer quantity) {
 		logger.info("Selling stock");
-		String result = DaoImpl.getInstance().updateSell(username,exchange,stock,quantity );
+		String result = daoImpl.updateSell(username,exchange,stock,quantity );
 		return result;
 
 	}
@@ -129,7 +98,7 @@ public class ServiceController extends SpringBootServletInitializer {
 	@ResponseBody
 	public String validateUser(  @RequestParam("UserName") String username, @RequestParam("Password") String pass) {
 		logger.info("validating user");
-		String result = DaoImpl.getInstance().loginValidation(username,pass );
+		String result = daoImpl.loginValidation(username,pass );
 		return result;
 		
 	}

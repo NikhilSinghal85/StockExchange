@@ -11,6 +11,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
+import org.springframework.stereotype.Component;
 
 import com.example.Constants.QueryConstants;
 import com.example.StockExchange.StockAvailable;
@@ -18,22 +19,14 @@ import com.example.StockExchange.StockMapper;
 import com.example.StockExchange.User;
 import com.example.StockExchange.UserRowMapper;
 
+
+@Component
 public class DaoImpl {
-	
-	private static DaoImpl singelton = new DaoImpl();
 	
 	private Logger logger = LoggerFactory.getLogger(DaoImpl.class);
 	
 	@Autowired
 	private NamedParameterJdbcTemplate  namedParameterJdbcTemplate;
-	
-	public static DaoImpl getInstance() {
-		return singelton;
-	}
-	
-	private DaoImpl() {
-		
-	}
 	
 	public String updateBuy(String username, String exchange,String stock, Integer quantity) {
 		
@@ -99,7 +92,7 @@ public class DaoImpl {
 				ss2.put("username", username);
 				ss2.put("amount", quantity);
 				ss2.put("datetime", ldt.toString());
-				ss2.put("price", DaoImpl.randomNumberGenerator());
+				ss2.put("price", randomNumberGenerator());
 				ss2.put("buysell", "sell");
 				
 				namedParameterJdbcTemplate.update(QueryConstants.INSERTSELL, ss2);
@@ -137,7 +130,7 @@ public class DaoImpl {
 	}
 	
 	
-	public static double randomNumberGenerator() {
+	public  double randomNumberGenerator() {
 		return 2+Math.random();
 	}
 	
