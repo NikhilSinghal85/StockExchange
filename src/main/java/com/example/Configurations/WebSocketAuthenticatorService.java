@@ -18,16 +18,10 @@ public class WebSocketAuthenticatorService {
         if (password == null || password.trim().length()==0) {
             throw new AuthenticationCredentialsNotFoundException("Password was null or empty.");
         }
-        // Add your own logic for retrieving user in fetchUserFromDb()
-//        if (fetchUserFromDb(username, password) == null) {
-//            throw new BadCredentialsException("Bad credentials for user " + username);
-//        }
-
-        // null credentials, we do not pass the password along
         return new UsernamePasswordAuthenticationToken(
                 username,
                 null,
-                Collections.singleton((GrantedAuthority) () -> "USER") // MUST provide at least one role
+                Collections.singleton((GrantedAuthority) () -> "USER") 
         );
     }
 }

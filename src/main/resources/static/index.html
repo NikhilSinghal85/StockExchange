@@ -78,7 +78,7 @@
                     document.getElementById("response").innerHTML = this.responseText;
                 }
             };
-            xhttp.open("GET", "http://localhost:8080/validate", true, "username" , "password");
+            xhttp.open("GET", "http://localhost:8080/login?UserName="+document.getElementById("username").innerHTML + "&Password=" +document.getElementById("password").innerHTML", true, "username" , "password");
             xhttp.setRequestHeader("Content-type", "application/json");
             xhttp.send();
             
