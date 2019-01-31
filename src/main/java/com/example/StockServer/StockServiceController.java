@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.example.StockExchange.ExchangeType;
 import com.example.StockExchange.GenericStock;
 import com.example.StockExchange.StockExchange;
 
@@ -75,10 +76,14 @@ public class StockServiceController extends SpringBootServletInitializer {
 	String  buyStocks(@RequestParam("UserName") String username, @RequestParam("Exchange") String exchange, @RequestParam("Stock") String stock,
 			@RequestParam("Quantity") Integer quantity) {
 		logger.info("purchasing stock");
-			// check if user have this stock available 
-			logger.info("Buying quantity::" + quantity);
-			String result = daoImpl.updateBuy(username,exchange,stock,quantity );
+		// check if user have this stock available 
+		try  {
+			String result = daoImpl.updateBuy(username,ExchangeType.valueOf(exchange).toString(),stock,quantity );
 			return result;
+		}
+		catch (IllegalArgumentException e) {
+			return "Incorrect Options Selected";
+		}
 	}
 	
 	
@@ -88,8 +93,14 @@ public class StockServiceController extends SpringBootServletInitializer {
 	String sellStocks(@RequestParam("UserName") String username, @RequestParam("Exchange") String exchange, @RequestParam("Stock") String stock,
 			@RequestParam("Quantity") Integer quantity) {
 		logger.info("Selling stock");
-		String result = daoImpl.updateSell(username,exchange,stock,quantity );
-		return result;
+		try  {
+			String result = daoImpl.updateSell(username,ExchangeType.valueOf(exchange).toString(),stock,quantity );
+			return result;
+		}
+		catch (IllegalArgumentException e) {
+			return "Incorrect Options Selected";
+		}
+		
 
 	}
 	
