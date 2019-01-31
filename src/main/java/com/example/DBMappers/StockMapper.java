@@ -1,9 +1,11 @@
-package com.example.StockExchange;
+package com.example.DBMappers;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
 import org.springframework.jdbc.core.RowMapper;
+
+import com.example.StockExchange.StockAvailable;
 
 public class StockMapper implements RowMapper<StockAvailable>
 {

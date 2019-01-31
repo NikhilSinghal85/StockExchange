@@ -14,10 +14,10 @@ import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.stereotype.Component;
 
 import com.example.Constants.QueryConstants;
+import com.example.DBMappers.StockMapper;
+import com.example.DBMappers.UserRowMapper;
 import com.example.StockExchange.StockAvailable;
-import com.example.StockExchange.StockMapper;
 import com.example.StockExchange.User;
-import com.example.StockExchange.UserRowMapper;
 
 
 @Component
@@ -97,7 +97,7 @@ public class DaoImpl {
 				
 				namedParameterJdbcTemplate.update(QueryConstants.INSERTSELL, ss2);
 				
-				return "Selling successful sold stock :::" + number;
+				return "Selling successful sold stock";
 				
 			}
 		}

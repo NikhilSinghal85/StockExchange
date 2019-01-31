@@ -35,7 +35,7 @@ import com.example.StockExchange.StockExchange;
 @ConfigurationProperties("oracle")	
 @ComponentScan({ "com.example.*"})
 @Controller
-public class ServiceController extends SpringBootServletInitializer {
+public class StockServiceController extends SpringBootServletInitializer {
 	
 	@Autowired
 	private GenericStock genericStock;
@@ -49,7 +49,7 @@ public class ServiceController extends SpringBootServletInitializer {
 	
 	private static Map<String, StockExchange> EXHANGE_REPOSITORY = new HashMap<>();
 	
-	private Logger logger = LoggerFactory.getLogger(ServiceController.class);
+	private Logger logger = LoggerFactory.getLogger(StockServiceController.class);
 	
 	@PostConstruct
 	private void loadAvailableStock() {
@@ -57,7 +57,7 @@ public class ServiceController extends SpringBootServletInitializer {
 	}
 	
 	public static void main(String[] args) {
-		SpringApplication.run(ServiceController.class, args);
+		SpringApplication.run(StockServiceController.class, args);
 		
 	}
 

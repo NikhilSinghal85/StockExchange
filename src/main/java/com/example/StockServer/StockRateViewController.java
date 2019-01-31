@@ -9,6 +9,8 @@ import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.messaging.simp.SimpMessageSendingOperations;
 import org.springframework.stereotype.Component;
 
+import com.example.StockExchange.StockUtility;
+
 
 @Component
 public class StockRateViewController {

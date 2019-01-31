@@ -1,4 +1,4 @@
-package com.example.StockServer;
+package com.example.StockExchange;
 
 
 /**

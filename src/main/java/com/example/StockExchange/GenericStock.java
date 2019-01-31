@@ -17,6 +17,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.example.DBMappers.CompanyRowMapper;
+
 
 /**
  * This is implementation of StockExchange will further extend it
