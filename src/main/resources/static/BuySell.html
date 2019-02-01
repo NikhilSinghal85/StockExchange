@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Buy Sell Stock </title>
+</head>
+<body>
+
+<div id="main-content" class="container">
+            <form>
+            <h1>What is your Stock to Buy?</h1>
+                <div class="form-group">
+                    <input type="text" name="exchange" id="exchange" class="form-control input-lg"
+                               placeholder="exchange" required="true" autofocus="true"/>
+                    <input type="text" name="stock" id="stock" class="form-control input-lg"
+                               placeholder="stock" required="true" autofocus="true"/>
+                    <input type="text" name="quantity" id="quantity" class="form-control input-lg"
+                               placeholder="quantity" required="true" autofocus="true"/>
+                    <input type="text" name="buysell" id="buysell" class="form-control input-lg"
+                               placeholder="Buy Or Sell" required="true" autofocus="true"/>
+                </div>
+                <button id="send" class="btn btn-default"  onclick="callREST2()">Buy/Sell</button>
+            </form>
+            <div id="response2"></div>
+     <script>
+        function callREST2() {
+            var xhttp = new XMLHttpRequest();
+            xhttp.onreadystatechange = function() {
+                if (this.readyState == 4 && this.status == 200 && this.responseText == "PurchaseSuccessful") {
+                	location.href = "http://localhost:8080/PurchaseSuccessful.html";
+                }
+                else if (this.readyState == 4 && this.status == 200 && this.responseText == "SellingSuccessful") {
+                	location.href = "http://localhost:8080/SellingSuccessful.html";
+                }
+                else if (this.readyState == 4 && this.status == 200 && this.responseText != "PurchaseFailed") {
+                	location.href = "http://localhost:8080/SellingFailed.html";
+                }
+                else {
+                	location.href = "http://localhost:8080/PurchaseFailed.html";
+                }
+            }; 
+            if (document.getElementById("buysell").value == "buy" || document.getElementById("buysell").value == "Buy") {
+            	xhttp.open("GET", "http://localhost:8080/buy?UserName=User1&Exchange="+ document.getElementById("exchange").value
+             	+ "&Stock=" +document.getElementById("stock").value  + "&Quantity=" +document.getElementById("quantity").value, true);
+             }
+             else {
+             	xhttp.open("GET", "http://localhost:8080/sell?UserName=User1&Exchange="+ document.getElementById("exchange").value
+             	+ "&Stock=" +document.getElementById("stock").value  + "&Quantity=" +document.getElementById("quantity").value, true);
+             }
+            xhttp.send();
+            
+        }
+    </script>
+    
+</div>
+</body>
+</html>

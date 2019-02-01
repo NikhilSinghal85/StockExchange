@@ -43,10 +43,12 @@ public class DaoImpl {
 		// first entry for given stock
 		try {
 			namedParameterJdbcTemplate.update(QueryConstants.INSERTBUY, ss4);
-			return "Purchase Successful";
+			logger.info("Purchase Successful");
+			return "PurchaseSuccessful";
 		}
 		catch (DataAccessException e) {
-			return "Purchase Failed";
+			logger.info("Purchase Failed");
+			return "PurchaseFailed";
 		}
 		
 	}
@@ -97,7 +99,7 @@ public class DaoImpl {
 				
 				namedParameterJdbcTemplate.update(QueryConstants.INSERTSELL, ss2);
 				
-				return "Selling successful sold stock";
+				return "SellingSuccessful";
 				
 			}
 		}
