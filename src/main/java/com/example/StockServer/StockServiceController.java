@@ -104,6 +104,23 @@ public class StockServiceController extends SpringBootServletInitializer {
 
 	}
 	
+	
+	@GetMapping("/history")
+	@ResponseBody
+	String averageHistory(@RequestParam("UserName") String username, @RequestParam("Exchange") String exchange, @RequestParam("Stock") String stock,
+			@RequestParam("Quantity") Integer quantity) {
+		logger.info("Average history");
+		try  {
+			String result = daoImpl.averageHistory(username,ExchangeType.valueOf(exchange).toString(),stock,quantity );
+			return result;
+		}
+		catch (IllegalArgumentException e) {
+			return "Incorrect Options Selected";
+		}
+		
+
+	}
+	
 
 	@GetMapping("/login")
 	@ResponseBody

@@ -110,6 +110,19 @@ public class DaoImpl {
 	}
 	
 	
+	
+	public String averageHistory(String username, String exchange,String stock, Integer quantity) {
+		Map<String, Object> ss = new HashMap<>();
+		ss.put("stock", stock);
+		ss.put("exchange", exchange);
+		ss.put("username", username);
+		ss.put("buy", "buy");
+		ss.put("sell", "sell");
+		return "lalala";
+		
+	}
+	
+	
 	public String loginValidation(String username, String pass) {
 		Map<String, Object> ss = new HashMap<>();
 		ss.put("userName", username.toLowerCase());

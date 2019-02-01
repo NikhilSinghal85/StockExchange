@@ -73,6 +73,7 @@
     <script>
         function callREST() {
             var xhttp = new XMLHttpRequest();
+            sessionStorage.clickcount = 1;
             xhttp.onreadystatechange = function() {
                 if (this.readyState == 4 && this.status == 200 && this.responseText == "Login success") {
                     location.href = "http://localhost:8080/BuySell.html";
