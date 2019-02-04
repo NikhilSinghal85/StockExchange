@@ -1,5 +1,6 @@
 package com.example.StockServer;
 
+import java.text.DecimalFormat;
 import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -14,8 +15,10 @@ import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.stereotype.Component;
 
 import com.example.Constants.QueryConstants;
+import com.example.DBMappers.HistoryRowMapper;
 import com.example.DBMappers.StockMapper;
 import com.example.DBMappers.UserRowMapper;
+import com.example.StockExchange.History;
 import com.example.StockExchange.StockAvailable;
 import com.example.StockExchange.User;
 
@@ -111,14 +114,17 @@ public class DaoImpl {
 	
 	
 	
-	public String averageHistory(String username, String exchange,String stock, Integer quantity) {
+	public String averageHistory(Integer average) {
 		Map<String, Object> ss = new HashMap<>();
-		ss.put("stock", stock);
-		ss.put("exchange", exchange);
-		ss.put("username", username);
-		ss.put("buy", "buy");
-		ss.put("sell", "sell");
-		return "lalala";
+		ss.put("average", average);
+		List<History> resultSet = namedParameterJdbcTemplate.query(QueryConstants.HISTORY, ss, new HistoryRowMapper());
+		Iterator<History> itr = resultSet.iterator();
+		String result = " ";
+		while (itr.hasNext()) {
+			History temp = itr.next();
+			result  = result + " --> " +  temp.getusername() + " Average Buy Price is :: Rs " + temp.getaverage() + "\n";
+		}
+		return result;
 		
 	}
 	
@@ -146,7 +152,10 @@ public class DaoImpl {
 	
 	
 	public  double randomNumberGenerator() {
-		return 2+Math.random();
+		DecimalFormat df = new DecimalFormat("#.####");
+		double d = Math.random();
+		
+		return Double.parseDouble(df.format(d)) *100 ;
 	}
 	
 

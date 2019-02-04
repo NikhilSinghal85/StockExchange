@@ -15,6 +15,7 @@ public class QueryConstants {
 	
 	public final static String  LOGINVALIDATION  = "Select * from hr.Login where username = :userName  AND password = :password";
 
+	public final static String  HISTORY = "Select username, AVG (Price) AS average from hr.records where buysell = 'buy' GROUP BY username having AVG (Price) > :average order by average desc";
 	
 	// not used running them directly in DB 
 	

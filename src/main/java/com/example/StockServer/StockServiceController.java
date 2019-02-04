@@ -65,7 +65,6 @@ public class StockServiceController extends SpringBootServletInitializer {
 	@MessageMapping("/stock")
     @SendTo("/topic/stocks")
 	void displayExchange() {
-		
 		stockRateViewController.refreshStockRate();
 		
 	}
@@ -100,18 +99,15 @@ public class StockServiceController extends SpringBootServletInitializer {
 		catch (IllegalArgumentException e) {
 			return "Incorrect Options Selected";
 		}
-		
-
 	}
 	
 	
 	@GetMapping("/history")
 	@ResponseBody
-	String averageHistory(@RequestParam("UserName") String username, @RequestParam("Exchange") String exchange, @RequestParam("Stock") String stock,
-			@RequestParam("Quantity") Integer quantity) {
+	String averageBuyHistory(@RequestParam("average") Integer average) {
 		logger.info("Average history");
 		try  {
-			String result = daoImpl.averageHistory(username,ExchangeType.valueOf(exchange).toString(),stock,quantity );
+			String result = daoImpl.averageHistory(average );
 			return result;
 		}
 		catch (IllegalArgumentException e) {
