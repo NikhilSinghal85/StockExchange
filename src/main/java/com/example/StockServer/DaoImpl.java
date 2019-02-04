@@ -1,6 +1,7 @@
 package com.example.StockServer;
 
 import java.text.DecimalFormat;
+import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -27,6 +28,10 @@ import com.example.StockExchange.User;
 public class DaoImpl {
 	
 	private Logger logger = LoggerFactory.getLogger(DaoImpl.class);
+	
+	
+	// to do later to support generic format in all application
+	private SimpleDateFormat sdf = new SimpleDateFormat("dd-M-yyyy hh:mm:ss");
 	
 	@Autowired
 	private NamedParameterJdbcTemplate  namedParameterJdbcTemplate;

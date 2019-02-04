@@ -7,18 +7,33 @@
 
 <div id="main-content" class="container">
             <form>
-            <h1>What is your Stock to Buy?</h1>
+            <h1>What is your Stock to Buy/Sell?</h1>
                 <div class="form-group">
                     <input type="text" name="exchange" id="exchange" class="form-control input-lg"
-                               placeholder="exchange" required="true" autofocus="true"/>
+                               placeholder="Exchange..." required="true" autofocus="true"/>
                     <input type="text" name="stock" id="stock" class="form-control input-lg"
-                               placeholder="stock" required="true" autofocus="true"/>
+                               placeholder="Stock..." required="true" autofocus="true"/>
                     <input type="text" name="quantity" id="quantity" class="form-control input-lg"
-                               placeholder="quantity" required="true" autofocus="true"/>
+                               placeholder="Quantity..." required="true" autofocus="true"/>
                     <input type="text" name="buysell" id="buysell" class="form-control input-lg"
-                               placeholder="Buy Or Sell" required="true" autofocus="true"/>
+                               placeholder="Buy Or Sell..." required="true" autofocus="true"/>
                 </div>
                 <button id="send" class="btn btn-default"  onclick="callREST2()">Buy/Sell</button>
+            </form>
+            <div id="response2"></div>
+            
+            <form>
+            <h1>View Purchase History</h1>
+                <div class="form-group">
+               	   <label for="SDate">Start Date : </label>
+               	   <input id="StartDate" type="date" value="2019-01-01"/>
+               	   <label for="EDate">End Date : </label>
+               	   <input id="EndDate" type="date" value="2019-01-01"/>
+                    <input type="text" name="buysell" id="buysell" class="form-control input-lg"
+                               placeholder="Buy Or Sell..." required="true" autofocus="true"/>
+                   
+                </div>
+                <button id="send" class="btn btn-default"  onclick="callREST3()">History</button>
             </form>
             <div id="response2"></div>
      <script>
