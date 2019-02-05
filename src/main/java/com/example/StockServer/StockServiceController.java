@@ -1,10 +1,7 @@
 package com.example.StockServer;
 
-import java.text.SimpleDateFormat;
-import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.StringTokenizer;
 
 import javax.annotation.PostConstruct;
 
@@ -93,7 +90,7 @@ public class StockServiceController extends SpringBootServletInitializer {
 				}
 			}
 			
-			String result = daoImpl.updateBuy(username,ExchangeType.valueOf(exchange).toString(),stock,quantity );
+			String result = daoImpl.updateBuy(username,ExchangeType.valueOf(exchange).getExchangeType(),stock,quantity );
 			return result;
 		}
 		catch (IllegalArgumentException e) {
@@ -119,7 +116,7 @@ public class StockServiceController extends SpringBootServletInitializer {
 			}
 		}
 		try  {
-			String result = daoImpl.updateSell(username,ExchangeType.valueOf(exchange).toString(),stock,quantity );
+			String result = daoImpl.updateSell(username,ExchangeType.valueOf(exchange).getExchangeType(),stock,quantity );
 			return result;
 		}
 		catch (IllegalArgumentException e) {
@@ -181,7 +178,7 @@ public class StockServiceController extends SpringBootServletInitializer {
 		}
 		
 	
-			String result = daoImpl.buySellHistory(username, sdate.toString(), edate.toString(), buysell );
+			String result = daoImpl.buySellHistory(username, sdate, edate, buysell );
 			logger.info("sending result ::" + result);
 			return result;
 		}

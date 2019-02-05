@@ -53,11 +53,11 @@
                 	location.href = "http://localhost:8080/PurchaseFailed.html";
                 }
             }; 
-            if (document.getElementById("buysell").value == "buy" || document.getElementById("buysell").value == "Buy" && sessionStorage.clickcount > 0) {
+            if (document.getElementById("buysell").value == "buy" || document.getElementById("buysell").value == "Buy" ) {
             	xhttp.open("GET", "http://localhost:8080/buy?UserName= &Exchange="+ document.getElementById("exchange").value
              	+ "&Stock=" +document.getElementById("stock").value  + "&Quantity=" +document.getElementById("quantity").value, true);
              }
-             else if ((document.getElementById("buysell").value == "sell" || document.getElementById("buysell").value == "Sell") && sessionStorage.clickcount > 0)  {
+             else if ((document.getElementById("buysell").value == "sell" || document.getElementById("buysell").value == "Sell") )  {
              	xhttp.open("GET", "http://localhost:8080/sell?UserName= &Exchange="+ document.getElementById("exchange").value
              	+ "&Stock=" +document.getElementById("stock").value  + "&Quantity=" +document.getElementById("quantity").value, true);
              }

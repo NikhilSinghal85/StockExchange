@@ -4,10 +4,10 @@ public class QueryConstants {
 	
 	
 	public final static String  INSERTBUY = "insert into hr.records ( username, exchange_name,stock_name,Stock_number, timestamp, price, buysell ) "
-			+ "values( :username, :exchange, :stock, :amount, :datetime, :price, :buysell )";
+			+ "values( :username, :exchange, :stock, :amount, CURRENT_TIMESTAMP, :price, :buysell )";
 	
 	public final static String  INSERTSELL = "insert into hr.records ( username, exchange_name,stock_name,Stock_number, timestamp, price, buysell ) values("
-			+ "	:username, :exchange, :stock, :amount, :datetime, :price, :buysell )";
+			+ "	:username, :exchange, :stock, :amount, CURRENT_TIMESTAMP, :price, :buysell )";
 	
 	public final static String  FETCHBUY = "Select Stock_number from hr.records where stock_name = :stock AND exchange_name = :exchange AND username = :username AND buysell = :buy";
 			
@@ -15,7 +15,10 @@ public class QueryConstants {
 	
 	public final static String  LOGINVALIDATION  = "Select * from hr.Login where username = :userName  AND password = :password";
 
-	public final static String  HISTORY = "Select username, AVG (Price) AS average from hr.records where buysell = 'buy' GROUP BY username having AVG (Price) > :average order by average desc";
+//	public final static String  HISTORY = "Select username, AVG (Price) AS average from hr.records where buysell = 'buy' GROUP BY username having average > :average order by average desc";
+	
+	
+	public final static String  HISTORY = "Select * from hr.AvgHistory where average > :average order by average desc";
 	
 	// not used running them directly in DB 
 	
@@ -31,5 +34,7 @@ public class QueryConstants {
 			"  FROM dual;\r\n" + 
 			"  END IF;\r\n" + 
 			"END";
+	
+	public final static String  RECORDVIEW = "CREATE OR REPLACE VIEW HR.AvgHistory AS Select username, AVG (Price) AS average from hr.records where buysell = 'buy' GROUP BY username";
 	
 }

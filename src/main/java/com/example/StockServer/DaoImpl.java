@@ -1,7 +1,7 @@
 package com.example.StockServer;
 
 import java.text.DecimalFormat;
-import java.text.SimpleDateFormat;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -36,7 +36,7 @@ public class DaoImpl {
 	@Autowired
 	private NamedParameterJdbcTemplate  namedParameterJdbcTemplate;
 	
-	public String updateBuy(String username, String exchange,String stock, Integer quantity) {
+	public String updateBuy(String username, Integer exchange,String stock, Integer quantity) {
 		
 		LocalDateTime ldt =  LocalDateTime.now();
 		
@@ -62,7 +62,7 @@ public class DaoImpl {
 	}
 	
 	
-	public String updateSell(String username, String exchange,String stock, Integer quantity) {
+	public String updateSell(String username, Integer exchange,String stock, Integer quantity) {
 		
 		Map<String, Object> ss = new HashMap<>();
 		ss.put("stock", stock);
@@ -141,10 +141,8 @@ public class DaoImpl {
 		ss.put("buysell", buysell);
 		
 		
-//		
-		String  buySellHistory = "Select timestamp, price, exchange_name, stock_name from hr.records where buysell = :buysell and username = :username and timestamp > :sdate and timestamp< :edate";
-//		
-//		
+		String  buySellHistory = "Select timestamp, price, exchange_name, stock_name from hr.records where buysell = :buysell and username = :username and timestamp > to_date(:sdate, 'yyyy MM dd') and timestamp < to_date(:edate, 'yyyy MM dd')";
+
 		List<UserHistoryValues> resultSet = namedParameterJdbcTemplate.query(buySellHistory, ss, new UserHistoryRowMapper());
 		Iterator<UserHistoryValues> itr = resultSet.iterator();
 		String result = "";
