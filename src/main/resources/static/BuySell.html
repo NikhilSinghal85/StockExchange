@@ -18,7 +18,7 @@
                     <input type="text" name="buysell" id="buysell" class="form-control input-lg"
                                placeholder="Buy Or Sell..." required="true" autofocus="true"/>
                 </div>
-                <button id="send" class="btn btn-default"  onclick="callREST2()">Buy/Sell</button>
+                <button id="send" class="btn btn-default" type="button"  onclick="callREST2()">Buy/Sell</button>
             </form>
             <div id="response2"></div>
             
@@ -29,13 +29,13 @@
                	   <input id="StartDate" type="date" value="2019-01-01"/>
                	   <label for="EDate">End Date : </label>
                	   <input id="EndDate" type="date" value="2019-01-01"/>
-                    <input type="text" name="buysell" id="buysell" class="form-control input-lg"
+                    <input type="text" name="buysell" id="buysell2" class="form-control input-lg"
                                placeholder="Buy Or Sell..." required="true" autofocus="true"/>
                    
                 </div>
-                <button id="send" class="btn btn-default"  onclick="callREST3()">History</button>
+                <button id="send" class="btn btn-default" type="button" onclick="callREST3()">History</button>
             </form>
-            <div id="response2"></div>
+            <div id="response3"></div>
      <script>
         function callREST2() {
             var xhttp = new XMLHttpRequest();
@@ -54,17 +54,32 @@
                 }
             }; 
             if (document.getElementById("buysell").value == "buy" || document.getElementById("buysell").value == "Buy" && sessionStorage.clickcount > 0) {
-            	xhttp.open("GET", "http://localhost:8080/buy?UserName=User1&Exchange="+ document.getElementById("exchange").value
+            	xhttp.open("GET", "http://localhost:8080/buy?UserName= &Exchange="+ document.getElementById("exchange").value
              	+ "&Stock=" +document.getElementById("stock").value  + "&Quantity=" +document.getElementById("quantity").value, true);
              }
              else if ((document.getElementById("buysell").value == "sell" || document.getElementById("buysell").value == "Sell") && sessionStorage.clickcount > 0)  {
-             	xhttp.open("GET", "http://localhost:8080/sell?UserName=User1&Exchange="+ document.getElementById("exchange").value
+             	xhttp.open("GET", "http://localhost:8080/sell?UserName= &Exchange="+ document.getElementById("exchange").value
              	+ "&Stock=" +document.getElementById("stock").value  + "&Quantity=" +document.getElementById("quantity").value, true);
              }
              else {
              	location.href = "http://localhost:8080/Unauthorized.html";
              }
             xhttp.send();
+            
+        }
+     </script>
+     
+     <script>
+        function callREST3() {
+            var xhttp2 = new XMLHttpRequest();
+            xhttp2.onreadystatechange = function() {
+                if (this.readyState == 4 && this.status == 200 ) {
+                	document.getElementById("response3").innerHTML = this.responseText;
+                }
+            }; 
+            xhttp2.open("GET", "http://localhost:8080/buySellHistory?sdate="+ document.getElementById("StartDate").value + "&edate=" +document.getElementById("EndDate").value 
+            + "&buysell=" + document.getElementById("buysell2").value, true);
+            xhttp2.send();
             
         }
     </script>

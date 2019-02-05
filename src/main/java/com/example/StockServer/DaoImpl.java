@@ -18,10 +18,12 @@ import org.springframework.stereotype.Component;
 import com.example.Constants.QueryConstants;
 import com.example.DBMappers.HistoryRowMapper;
 import com.example.DBMappers.StockMapper;
+import com.example.DBMappers.UserHistoryRowMapper;
 import com.example.DBMappers.UserRowMapper;
 import com.example.StockExchange.History;
 import com.example.StockExchange.StockAvailable;
 import com.example.StockExchange.User;
+import com.example.StockExchange.UserHistoryValues;
 
 
 @Component
@@ -30,8 +32,6 @@ public class DaoImpl {
 	private Logger logger = LoggerFactory.getLogger(DaoImpl.class);
 	
 	
-	// to do later to support generic format in all application
-	private SimpleDateFormat sdf = new SimpleDateFormat("dd-M-yyyy hh:mm:ss");
 	
 	@Autowired
 	private NamedParameterJdbcTemplate  namedParameterJdbcTemplate;
@@ -132,6 +132,37 @@ public class DaoImpl {
 		return result;
 		
 	}
+	
+	public String buySellHistory(String username, String sdate, String edate, String buysell ) {
+		Map<String, Object> ss = new HashMap<>();
+		ss.put("username", username);
+		ss.put("sdate", sdate);
+		ss.put("edate", edate);
+		ss.put("buysell", buysell);
+		
+		
+//		
+		String  buySellHistory = "Select timestamp, price, exchange_name, stock_name from hr.records where buysell = :buysell and username = :username and timestamp > :sdate and timestamp< :edate";
+//		
+//		
+		List<UserHistoryValues> resultSet = namedParameterJdbcTemplate.query(buySellHistory, ss, new UserHistoryRowMapper());
+		Iterator<UserHistoryValues> itr = resultSet.iterator();
+		String result = "";
+		if (buysell.equalsIgnoreCase("buy")) {
+			result = "Purchase History::  ";
+		}
+		else {
+			 result = "Sale History::  ";
+		}
+		while (itr.hasNext()) {
+			UserHistoryValues temp = itr.next();
+			result  = result + " --> Exchange is :: " +  temp.getExchange() + " Stock  is ::  " + temp.getStock()+ " Price  is :: Rs  " + temp.getPrice() + " Time  is ::  " + temp.getTimestamp() + "\n";
+		}
+		return result;
+		
+	}
+	
+	
 	
 	
 	public String loginValidation(String username, String pass) {
