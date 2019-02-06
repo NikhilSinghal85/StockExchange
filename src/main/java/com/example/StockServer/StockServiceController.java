@@ -24,7 +24,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.example.StockExchange.ExchangeType;
 import com.example.StockExchange.GenericStock;
-import com.example.StockExchange.StockExchange;
 
 
 /**
@@ -50,14 +49,9 @@ public class StockServiceController extends SpringBootServletInitializer {
 	@Autowired
 	private StockRateViewController stockRateViewController;
 	
-	private static Map<String, StockExchange> EXHANGE_REPOSITORY = new HashMap<>();
 	
 	private Logger logger = LoggerFactory.getLogger(StockServiceController.class);
 	
-	@PostConstruct
-	private void loadAvailableStock() {
-		EXHANGE_REPOSITORY.put("genericStock", genericStock);
-	}
 	
 	public static void main(String[] args) {
 		SpringApplication.run(StockServiceController.class, args);
@@ -135,6 +129,22 @@ public class StockServiceController extends SpringBootServletInitializer {
 		}
 		catch (IllegalArgumentException e) {
 			return "Incorrect Options Selected";
+		}
+		
+
+	}
+	
+	
+	@GetMapping("/topTransaction")
+	@ResponseBody
+	String topTransaction(@RequestParam("position") Integer position) {
+		logger.info("top Transaction");
+		try  {
+			String result = daoImpl.topTransaction(position );
+			return result;
+		}
+		catch (IllegalArgumentException e) {
+			return "Not done these many transaction";
 		}
 		
 

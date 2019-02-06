@@ -20,6 +20,17 @@ public class QueryConstants {
 	
 	public final static String  HISTORY = "Select * from hr.AvgHistory where average > :average order by average desc";
 	
+	
+	public final static String  POSITON = "select *\r\n" + 
+			"  from\r\n" + 
+			"  (\r\n" + 
+			"    select\r\n" + 
+			"        Price\r\n" + 
+			"          ,dense_rank() over (order by Price desc) ranking\r\n" + 
+			"    from   hr.records\r\n" + 
+			"  )\r\n" + 
+			"  where ranking = :position ";
+	
 	// not used running them directly in DB 
 	
 	public final static String  USERSEQUENCE ="CREATE SEQUENCE hr.user_id_sequence START WITH 1 INCREMENT BY 1";

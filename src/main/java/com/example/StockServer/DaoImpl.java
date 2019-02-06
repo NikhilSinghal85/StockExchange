@@ -185,6 +185,20 @@ public class DaoImpl {
 	}
 	
 	
+	public String topTransaction(Integer position) {
+		Map<String, Object> ss = new HashMap<>();
+		ss.put("position", position);
+		List<History> resultSet = namedParameterJdbcTemplate.query(QueryConstants.POSITON, ss, new HistoryRowMapper());
+		Iterator<History> itr = resultSet.iterator();
+		String result = " ";
+		while (itr.hasNext()) {
+			History temp = itr.next();
+			result  = result + " The value at this position is --> " +  temp.getPositionValue() + "\n";
+		}
+		return result;
+		
+	}
+	
 	public  double randomNumberGenerator() {
 		DecimalFormat df = new DecimalFormat("#.####");
 		double d = Math.random();

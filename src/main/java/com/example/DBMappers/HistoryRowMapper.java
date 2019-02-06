@@ -9,7 +9,7 @@ import com.example.StockExchange.History;
 
 
 /**
- * Database table mapper class it maps to "Company" table in database
+ * Database table mapper class it maps to "History" table in database
  * @author nikhil.singhal
  *
  */
@@ -20,6 +20,7 @@ public class HistoryRowMapper implements RowMapper<History>
     	History history = new History();
     	history.setusername(rs.getString("username"));
     	history.setaverage(rs.getString("average"));
+    	history.setPositionValue(rs.getString("position"));
         return history;
     }
 }

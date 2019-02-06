@@ -11,7 +11,17 @@ public class History {
 	private String username;
 
 	private String average;
+	
+	private String positionValue;
 
+
+	public String getPositionValue() {
+		return positionValue;
+	}
+
+	public void setPositionValue(String positionValue) {
+		this.positionValue = positionValue;
+	}
 
 	public String getusername() {
 		return username;
