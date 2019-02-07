@@ -31,6 +31,9 @@ public class QueryConstants {
 			"  )\r\n" + 
 			"  where ranking = :position ";
 	
+	// this will same as above but in case 2 transactions are equal then it will still rank them 1 and 2 and fetch only 1 in even if 2 are valid
+	public final static String  POSITON2 =  " SELECT *  FROM (SELECT Price, row_number() OVER (order by Price desc) AS rn FROM hr.records) WHERE rn = :position";
+	
 	// not used running them directly in DB 
 	
 	public final static String  USERSEQUENCE ="CREATE SEQUENCE hr.user_id_sequence START WITH 1 INCREMENT BY 1";

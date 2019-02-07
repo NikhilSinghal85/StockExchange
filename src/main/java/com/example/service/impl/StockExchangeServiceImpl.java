@@ -14,7 +14,7 @@ public class StockExchangeServiceImpl implements StockExchangeService {
 
 	
 	@Autowired
-	private DaoStockExchange daoImpl;
+	private DaoStockExchange dataExchangeDao;
 	
 	@Override
 	public String updateBuy(String username, String exchange, String stock, Integer quantity) {
@@ -33,7 +33,7 @@ public class StockExchangeServiceImpl implements StockExchangeService {
 				}
 			}
 			
-			String result = daoImpl.updateBuy(username,ExchangeType.valueOf(exchange).getExchangeType(),stock,quantity );
+			String result = dataExchangeDao.updateBuy(username,ExchangeType.valueOf(exchange).getExchangeType(),stock,quantity );
 			return result;
 		}
 		catch (IllegalArgumentException e) {
@@ -44,7 +44,7 @@ public class StockExchangeServiceImpl implements StockExchangeService {
 	@Override
 	public String topTransaction(Integer position) {
 		try  {
-			String result = daoImpl.topTransaction(position );
+			String result = dataExchangeDao.topTransaction(position );
 			return result;
 		}
 		catch (IllegalArgumentException e) {
@@ -54,7 +54,7 @@ public class StockExchangeServiceImpl implements StockExchangeService {
 
 	@Override
 	public String loginValidation(String username, String pass) {
-		 return daoImpl.loginValidation(username,pass );
+		 return dataExchangeDao.loginValidation(username,pass );
 	}
 
 	@Override
@@ -74,7 +74,7 @@ public class StockExchangeServiceImpl implements StockExchangeService {
 		} else {
 				 username = ((UserDetails)principal).getUsername();
 		}
-			String result = daoImpl.buySellHistory(username, sdate, edate, buysell );
+			String result = dataExchangeDao.buySellHistory(username, sdate, edate, buysell );
 			return result;
 		}
 		catch (Exception  e) {
@@ -85,7 +85,7 @@ public class StockExchangeServiceImpl implements StockExchangeService {
 	@Override
 	public String averageHistory(Integer average) {
 		try  {
-			String result = daoImpl.averageHistory(average );
+			String result = dataExchangeDao.averageHistory(average );
 			return result;
 		}
 		catch (IllegalArgumentException e) {
@@ -106,7 +106,7 @@ public class StockExchangeServiceImpl implements StockExchangeService {
 			}
 		}
 		try  {
-			String result = daoImpl.updateSell(username,ExchangeType.valueOf(exchange).getExchangeType(),stock,quantity );
+			String result = dataExchangeDao.updateSell(username,ExchangeType.valueOf(exchange).getExchangeType(),stock,quantity );
 			return result;
 		}
 		catch (IllegalArgumentException e) {

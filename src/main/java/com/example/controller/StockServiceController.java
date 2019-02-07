@@ -25,9 +25,6 @@ import com.example.service.StockExchangeService;
  */
 
 
-@SpringBootApplication
-@ConfigurationProperties("oracle")	
-@ComponentScan({ "com.example.*"})
 @Controller
 public class StockServiceController extends SpringBootServletInitializer {
 	
@@ -42,11 +39,6 @@ public class StockServiceController extends SpringBootServletInitializer {
 	
 	private Logger logger = LoggerFactory.getLogger(StockServiceController.class);
 	
-	
-	public static void main(String[] args) {
-		SpringApplication.run(StockServiceController.class, args);
-		
-	}
 
 	@MessageMapping("/stock")
     @SendTo("/topic/stocks")
