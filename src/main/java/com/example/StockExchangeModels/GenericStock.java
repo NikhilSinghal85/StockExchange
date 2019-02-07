@@ -1,4 +1,4 @@
-package com.example.StockExchange;
+package com.example.StockExchangeModels;
 
 import java.util.HashSet;
 import java.util.Iterator;

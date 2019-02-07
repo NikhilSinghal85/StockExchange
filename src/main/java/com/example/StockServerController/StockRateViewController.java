@@ -1,4 +1,4 @@
-package com.example.StockServer;
+package com.example.StockServerController;
 
 import java.text.DecimalFormat;
 
@@ -9,7 +9,7 @@ import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.messaging.simp.SimpMessageSendingOperations;
 import org.springframework.stereotype.Component;
 
-import com.example.StockExchange.StockUtility;
+import com.example.StockExchangeModels.StockUtility;
 
 
 @Component
@@ -20,8 +20,6 @@ public class StockRateViewController {
 	@Autowired
 	private SimpMessageSendingOperations messagingTemplate;
 	
-	@Autowired
-	private DaoImpl daoImpl;
 	
 	
 	@SendTo("/topic/stocks")
@@ -32,12 +30,12 @@ public class StockRateViewController {
 				DecimalFormat df = new DecimalFormat("#.####");
 				while(true)
 				{
-					double d1= daoImpl.randomNumberGenerator();
-					double d2= daoImpl.randomNumberGenerator();
-					double d3= daoImpl.randomNumberGenerator();
-					double d4= daoImpl.randomNumberGenerator();
-					double d5= daoImpl.randomNumberGenerator();
-					double d6= daoImpl.randomNumberGenerator();
+					double d1= randomNumberGenerator();
+					double d2= randomNumberGenerator();
+					double d3= randomNumberGenerator();
+					double d4= randomNumberGenerator();
+					double d5= randomNumberGenerator();
+					double d6= randomNumberGenerator();
 
 					StockUtility gg = new StockUtility();
 					gg.setNse_CoalIndia(df.format(d1));
@@ -61,6 +59,13 @@ public class StockRateViewController {
 		}
 	}
 	
+	
+	public  double randomNumberGenerator() {
+		DecimalFormat df = new DecimalFormat("#.####");
+		double d = Math.random();
+		
+		return Double.parseDouble(df.format(d)) *100 ;
+	}
 	
 
 }

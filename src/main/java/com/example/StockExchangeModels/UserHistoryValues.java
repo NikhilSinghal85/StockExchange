@@ -1,4 +1,4 @@
-package com.example.StockExchange;
+package com.example.StockExchangeModels;
 
 /**
  * POJO class for database table History

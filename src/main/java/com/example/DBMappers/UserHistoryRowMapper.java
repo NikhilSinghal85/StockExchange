@@ -5,7 +5,7 @@ import java.sql.SQLException;
 
 import org.springframework.jdbc.core.RowMapper;
 
-import com.example.StockExchange.UserHistoryValues;
+import com.example.StockExchangeModels.UserHistoryValues;
 
 
 /**

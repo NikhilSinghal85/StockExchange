@@ -1,7 +1,6 @@
-package com.example.StockServer;
+package com.example.daoImpl;
 
 import java.text.DecimalFormat;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -20,22 +19,24 @@ import com.example.DBMappers.HistoryRowMapper;
 import com.example.DBMappers.StockMapper;
 import com.example.DBMappers.UserHistoryRowMapper;
 import com.example.DBMappers.UserRowMapper;
-import com.example.StockExchange.History;
-import com.example.StockExchange.StockAvailable;
-import com.example.StockExchange.User;
-import com.example.StockExchange.UserHistoryValues;
+import com.example.StockExchangeModels.History;
+import com.example.StockExchangeModels.StockAvailable;
+import com.example.StockExchangeModels.User;
+import com.example.StockExchangeModels.UserHistoryValues;
+import com.example.dao.DaoStockExchange;
 
 
 @Component
-public class DaoImpl {
+public class DaoStockExchangeImpl implements DaoStockExchange {
 	
-	private Logger logger = LoggerFactory.getLogger(DaoImpl.class);
+	private Logger logger = LoggerFactory.getLogger(DaoStockExchangeImpl.class);
 	
 	
 	
 	@Autowired
 	private NamedParameterJdbcTemplate  namedParameterJdbcTemplate;
 	
+	@Override
 	public String updateBuy(String username, Integer exchange,String stock, Integer quantity) {
 		
 		LocalDateTime ldt =  LocalDateTime.now();
@@ -61,7 +62,7 @@ public class DaoImpl {
 		
 	}
 	
-	
+	@Override
 	public String updateSell(String username, Integer exchange,String stock, Integer quantity) {
 		
 		Map<String, Object> ss = new HashMap<>();
@@ -118,7 +119,7 @@ public class DaoImpl {
 	}
 	
 	
-	
+	@Override
 	public String averageHistory(Integer average) {
 		Map<String, Object> ss = new HashMap<>();
 		ss.put("average", average);
@@ -133,6 +134,7 @@ public class DaoImpl {
 		
 	}
 	
+	@Override
 	public String buySellHistory(String username, String sdate, String edate, String buysell ) {
 		Map<String, Object> ss = new HashMap<>();
 		ss.put("username", username);
@@ -162,7 +164,7 @@ public class DaoImpl {
 	
 	
 	
-	
+	@Override
 	public String loginValidation(String username, String pass) {
 		Map<String, Object> ss = new HashMap<>();
 		ss.put("userName", username.toLowerCase());
@@ -184,7 +186,7 @@ public class DaoImpl {
 		}
 	}
 	
-	
+	@Override
 	public String topTransaction(Integer position) {
 		Map<String, Object> ss = new HashMap<>();
 		ss.put("position", position);
