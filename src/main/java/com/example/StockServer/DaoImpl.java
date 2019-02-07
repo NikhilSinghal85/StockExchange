@@ -193,7 +193,7 @@ public class DaoImpl {
 		String result = " ";
 		while (itr.hasNext()) {
 			History temp = itr.next();
-			result  = result + " The value at this position is --> " +  temp.getPositionValue() + "\n";
+			result  = result + " The price value at this position is --> " +  temp.getPrice() + "\n";
 		}
 		return result;
 		

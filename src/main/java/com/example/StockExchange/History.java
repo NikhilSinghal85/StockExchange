@@ -13,7 +13,20 @@ public class History {
 	private String average;
 	
 	private String positionValue;
+	
+	/**
+	 * 
+	 */
+	private String price;
 
+
+	public String getPrice() {
+		return price;
+	}
+
+	public void setPrice(String price) {
+		this.price = price;
+	}
 
 	public String getPositionValue() {
 		return positionValue;

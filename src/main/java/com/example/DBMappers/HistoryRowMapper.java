@@ -18,9 +18,16 @@ public class HistoryRowMapper implements RowMapper<History>
     @Override
     public History mapRow(ResultSet rs, int rowNum) throws SQLException {
     	History history = new History();
+    	try {
     	history.setusername(rs.getString("username"));
     	history.setaverage(rs.getString("average"));
-    	history.setPositionValue(rs.getString("position"));
+    	}
+    	catch (Exception e) {
+    		// will have to make new mapper class later 
+    		history.setPositionValue(rs.getString("ranking"));
+    		history.setPrice(rs.getString("price"));
+    	}
+    	
         return history;
     }
 }
