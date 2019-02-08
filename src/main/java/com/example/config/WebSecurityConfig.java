@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
+import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.crypto.password.NoOpPasswordEncoder;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
@@ -31,27 +32,14 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 	}
 
 
-	//    @Override
-	//    protected void configure(final HttpSecurity http) throws Exception {
-	//    	
-	////        http
-	////                .httpBasic().disable()
-	////                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
-	////                .authorizeRequests().antMatchers("/gs-guide-websocket","/", "/login**", "/stock").permitAll();
-	//        
-	//        http//.authorizeRequests().antMatchers("/gs-guide-websocket").permitAll().and()
-	//        .authorizeRequests()
-	//		.antMatchers("/", "/stock", "/BuySell", "/BuySell.html").access("hasRole('ROLE_USER')")
-	//		.and()
-	//			.formLogin().loginPage("/index.html").permitAll()
-	//			.loginProcessingUrl("/login").permitAll()
-	//			 .usernameParameter("user1")
-	//             .passwordParameter("pass1")
-	//			.successHandler(myAuthenticationSuccessHandler());
-	//			//.defaultSuccessUrl("/BuySell");
-	//    }
+// uncomment it while for junit test case this will remove authentication of user	
+//	  @Override
+//      public void configure(HttpSecurity http) throws Exception {
+//           http.authorizeRequests().antMatchers("/**").permitAll();
+//      }
 
-
+	  
+	  
 	@Bean
 	public AuthenticationSuccessHandler myAuthenticationSuccessHandler(){
 		return new MySimpleUrlAuthenticationSuccessHandler();
