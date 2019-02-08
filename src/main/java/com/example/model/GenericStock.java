@@ -21,6 +21,7 @@ import com.example.mapper.CompanyRowMapper;
 
 
 /**
+ * This class is no longer used
  * This is implementation of StockExchange will further extend it
  * @author nikhil.singhal
  *

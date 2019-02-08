@@ -9,6 +9,12 @@ import com.example.dao.DaoStockExchange;
 import com.example.model.ExchangeType;
 import com.example.service.StockExchangeService;
 
+
+/**
+ * My comment move username identification code to a method and use it instead of writing again and again
+ * @author nikhil.singhal
+ *
+ */
 @Component
 public class StockExchangeServiceImpl implements StockExchangeService {
 
@@ -64,16 +70,14 @@ public class StockExchangeServiceImpl implements StockExchangeService {
 		}
 		
 		try  {
-		
-		
-		
-		String username = "";
-		Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-		if (principal instanceof UserDetails) {
-				 username = ((UserDetails)principal).getUsername();
-		} else {
-				 username = ((UserDetails)principal).getUsername();
-		}
+
+			String username = "";
+			Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+			if (principal instanceof UserDetails) {
+				username = ((UserDetails)principal).getUsername();
+			} else {
+				username = ((UserDetails)principal).getUsername();
+			}
 			String result = dataExchangeDao.buySellHistory(username, sdate, edate, buysell );
 			return result;
 		}

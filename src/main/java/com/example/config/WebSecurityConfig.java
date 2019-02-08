@@ -32,7 +32,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 	}
 
 
-// uncomment it while for junit test case this will remove authentication of user	
+// @nikhil uncomment it for junit test case this will remove authentication of user	
 //	  @Override
 //      public void configure(HttpSecurity http) throws Exception {
 //           http.authorizeRequests().antMatchers("/**").permitAll();

@@ -25,7 +25,11 @@ import com.example.model.StockAvailable;
 import com.example.model.User;
 import com.example.model.UserHistoryValues;
 
-
+/**
+ * My comment can move these hard coded maps and string some where else later on
+ * @author nikhil.singhal
+ *
+ */
 @Component
 public class DaoStockExchangeImpl implements DaoStockExchange {
 	

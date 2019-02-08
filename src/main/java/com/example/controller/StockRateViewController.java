@@ -12,6 +12,12 @@ import org.springframework.stereotype.Component;
 import com.example.model.StockUtility;
 
 
+/**
+ * My comment
+ *  This is stand alone class i can later break it to service with impl class if view is further extended
+ * @author nikhil.singhal
+ *
+ */
 @Component
 public class StockRateViewController {
 	
