@@ -31,13 +31,9 @@ public class StockServiceControllerTest {
 	
 	@Test
 	public void buyStocksTest() throws Exception {
-		
-		
-
 		Mockito.when(
 				stockExchangeService.updateBuy(Mockito.anyString(),
 						Mockito.anyString(), Mockito.anyString(), Mockito.anyInt())).thenReturn("PurchaseSuccessful");
-
 		RequestBuilder requestBuilder = MockMvcRequestBuilders.get(
 				"/buy?UserName=user1&Exchange=NSE&Stock=comp1&Quantity=100");
 

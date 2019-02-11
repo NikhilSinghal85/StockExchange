@@ -51,4 +51,15 @@ public class QueryConstants {
 	
 	public final static String  RECORDVIEW = "CREATE OR REPLACE VIEW HR.AvgHistory AS Select username, AVG (Price) AS average from hr.records where buysell = 'buy' GROUP BY username";
 	
+	
+	
+	//This procedure will fetch first_name from table hr.employee with employed_id given while executing procedure and
+	// store same in string  variable emp_first which can be fetched in code at runtime
+	public final static String STOREPROCEDURE = "CREATE OR REPLACE PROCEDURE hr.getEmpName \r\n" + 
+			"   (EMP_ID IN NUMBER, EMP_FIRST OUT VARCHAR2) IS\r\n" + 
+			"BEGIN\r\n" + 
+			"   SELECT FIRST_NAME INTO EMP_FIRST\r\n" + 
+			"   FROM hr.Employees\r\n" + 
+			"   WHERE EMPLOYEE_ID = EMP_ID;\r\n" + 
+			"END";
 }

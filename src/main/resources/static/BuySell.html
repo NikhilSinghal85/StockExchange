@@ -49,9 +49,6 @@
                 else if (this.readyState == 4 && this.status == 200 && this.responseText != "PurchaseFailed") {
                 	location.href = "http://localhost:8080/SellingFailed.html";
                 }
-                else {
-                	location.href = "http://localhost:8080/PurchaseFailed.html";
-                }
             }; 
             if (document.getElementById("buysell").value == "buy" || document.getElementById("buysell").value == "Buy" ) {
             	xhttp.open("GET", "http://localhost:8080/buy?UserName= &Exchange="+ document.getElementById("exchange").value

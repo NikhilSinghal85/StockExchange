@@ -48,7 +48,9 @@ public class StockServiceController {
 	String  buyStocks(@RequestParam("UserName") String username, @RequestParam("Exchange") String exchange, @RequestParam("Stock") String stock,
 			@RequestParam("Quantity") Integer quantity) {
 		logger.info("purchasing stock");
-		return stockExchangeService.updateBuy(username, exchange, stock, quantity);
+		String temp = stockExchangeService.updateBuy(username, exchange, stock, quantity);
+		System.out.println(temp);
+		return temp;
 		
 	}
 	
