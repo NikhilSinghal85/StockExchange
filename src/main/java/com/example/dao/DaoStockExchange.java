@@ -1,6 +1,6 @@
 package com.example.dao;
 
-
+import org.springframework.web.multipart.MultipartFile;
 
 public interface DaoStockExchange {
 	
@@ -33,5 +33,12 @@ public interface DaoStockExchange {
 	 * method to update sell record of user to database
 	 */
 	public String updateSell(String username, Integer exchange, String stock, Integer quantity);
+	
+	/**
+	 * method to uploadRecord of user to database
+	 */
+	public String uploadRecord(MultipartFile file);
+	
+	
 
 }

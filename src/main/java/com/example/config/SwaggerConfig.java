@@ -36,16 +36,19 @@ public class SwaggerConfig {
       "Apache 2.0", "http://www.apache.org/licenses/LICENSE-2.0");
 
   
+  private static final Set<String> DEFAULT_PRODUCES = 
+	      new HashSet<String>(Arrays.asList( "application/vnd.ms-excel"));
+
+  
   // this populates the Response content type in swagger GUI.
-  private static final Set<String> DEFAULT_PRODUCES_AND_CONSUMES = 
-      new HashSet<String>(Arrays.asList("application/json",
-          "application/xml"));
+  private static final Set<String> DEFAULT_CONSUMES = 
+      new HashSet<String>(Arrays.asList( "application/vnd.ms-excel"));
 
   @Bean
   public Docket api() {
     return new Docket(DocumentationType.SWAGGER_2)
         .apiInfo(DEFAULT_API_INFO)
-        .produces(DEFAULT_PRODUCES_AND_CONSUMES)
-        .consumes(DEFAULT_PRODUCES_AND_CONSUMES);
+        .produces(DEFAULT_PRODUCES)
+        .consumes(DEFAULT_CONSUMES);
   }
 }

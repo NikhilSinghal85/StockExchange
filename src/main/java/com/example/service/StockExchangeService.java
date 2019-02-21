@@ -1,5 +1,7 @@
 package com.example.service;
 
+import org.springframework.web.multipart.MultipartFile;
+
 public interface StockExchangeService {
 	
 	/**
@@ -31,4 +33,9 @@ public interface StockExchangeService {
 	 * method to update sell record of user
 	 */
 	public String updateSell(String username, String exchange, String stock, Integer quantity);
+	
+	/**
+	 * method to uploadRecord by swagger only
+	 */
+	public String uploadRecord(MultipartFile file);
 }

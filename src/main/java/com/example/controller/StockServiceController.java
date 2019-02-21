@@ -1,5 +1,7 @@
 package com.example.controller;
 
+import java.io.IOException;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -7,8 +9,11 @@ import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.example.service.StockExchangeService;
 
@@ -102,6 +107,17 @@ public class StockServiceController {
 		logger.info("validating user");
 		return stockExchangeService.loginValidation(username,pass );
 		
+	}
+	
+	
+	//@RequestMapping(value = "/upload", method = RequestMethod.POST)
+//	@PostMapping(path = "/upload", consumes = "application/vnd.ms-excel", produces = "application/json")
+	@PostMapping("/upload")
+	public String uploadRecord(@RequestPart("file") MultipartFile file) throws IOException {
+		logger.info("uploading ...");
+		stockExchangeService.uploadRecord(file);
+		
+		return "done";
 	}
 	
 	

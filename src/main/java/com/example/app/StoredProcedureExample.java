@@ -8,7 +8,7 @@ import java.sql.SQLException;
 public class StoredProcedureExample {
 
 	public static void main(String[] args) {
-
+		CallableStatement cstmt = null;
 		try {
 			
 			String URL = "jdbc:oracle:thin:@localhost:1521/xe";
@@ -16,13 +16,15 @@ public class StoredProcedureExample {
 			String PASS = "password@1";
 			Connection conn = DriverManager.getConnection(URL, USER, PASS);
 			
-			CallableStatement cstmt = null;
+		
 
 			String SQL = "{call hr.getEmpName (?, ?)}";
 			cstmt = conn.prepareCall (SQL);
 			cstmt.setInt(1, 198);
+			// register out paramater to read from result after executing query its position and datatype
 			cstmt.registerOutParameter(2, java.sql.Types.VARCHAR);
 			cstmt.executeUpdate();
+			// fetching the previously registered parameter at position 2
 			String name = cstmt.getString(2);
 			System.out.println("Name at position 198 is ::" + name);
 		}
@@ -30,8 +32,12 @@ public class StoredProcedureExample {
 			System.out.println("exception::::" +e.getMessage());
 		}
 		finally {
+			 try {
+				cstmt.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
 		}
-		// TODO Auto-generated method stub
 
 	}
 

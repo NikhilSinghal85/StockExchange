@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.example.dao.DaoStockExchange;
 import com.example.model.ExchangeType;
@@ -116,6 +117,12 @@ public class StockExchangeServiceImpl implements StockExchangeService {
 		catch (IllegalArgumentException e) {
 			return "Incorrect Options Selected";
 		}
+	}
+
+	@Override
+	public String uploadRecord(MultipartFile file) {
+		// TODO Auto-generated method stub
+		return dataExchangeDao.uploadRecord(file);
 	}
 
 }
