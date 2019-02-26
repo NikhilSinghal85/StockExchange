@@ -37,5 +37,5 @@ public interface StockExchangeService {
 	/**
 	 * method to uploadRecord by swagger only
 	 */
-	public String uploadRecord(MultipartFile file);
+	public void uploadRecord(MultipartFile file);
 }

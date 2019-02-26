@@ -1,8 +1,5 @@
 package com.example.dao.impl;
 
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.InputStream;
 import java.text.DecimalFormat;
 import java.time.LocalDateTime;
 import java.util.HashMap;
@@ -10,19 +7,12 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.poi.ss.usermodel.Cell;
-import org.apache.poi.ss.usermodel.CellType;
-import org.apache.poi.ss.usermodel.Row;
-import org.apache.poi.ss.usermodel.Sheet;
-import org.apache.poi.ss.usermodel.Workbook;
-import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.stereotype.Component;
-import org.springframework.web.multipart.MultipartFile;
 
 import com.example.constant.QueryConstants;
 import com.example.dao.DaoStockExchange;
@@ -35,17 +25,21 @@ import com.example.model.StockAvailable;
 import com.example.model.User;
 import com.example.model.UserHistoryValues;
 
+import annotations.ExcelColumnName;
+import excelPojo.ExcelEmployee;
+
 /**
  * My comment can move these hard coded maps and string some where else later on
  * @author nikhil.singhal
  *
  */
 @Component
-public class DaoStockExchangeImpl implements DaoStockExchange {
+public class DaoStockExchangeImpl<T> implements DaoStockExchange {
 	
 	private Logger logger = LoggerFactory.getLogger(DaoStockExchangeImpl.class);
 	
 	
+	Map <String, ExcelColumnName>  aa =  new HashMap<>(); 
 	
 	@Autowired
 	private NamedParameterJdbcTemplate  namedParameterJdbcTemplate;
@@ -223,42 +217,13 @@ public class DaoStockExchangeImpl implements DaoStockExchange {
 	}
 
 	@Override
-	public String uploadRecord(MultipartFile file) {
+	public String uploadRecord(List values) {
+		
 		logger.info("in dao impl");
-		  try {
-
-	            InputStream excelFile = file.getInputStream();
-	            Workbook workbook = new XSSFWorkbook(excelFile);
-	            Sheet datatypeSheet = workbook.getSheetAt(0);
-	            Iterator<Row> iterator = datatypeSheet.iterator();
-
-	            while (iterator.hasNext()) {
-
-	                Row currentRow = iterator.next();
-	                Iterator<Cell> cellIterator = currentRow.iterator();
-
-	                while (cellIterator.hasNext()) {
-
-	                    Cell currentCell = cellIterator.next();
-	                    //getCellTypeEnum shown as deprecated for version 3.15
-	                    //getCellTypeEnum ill be renamed to getCellType starting from version 4.0
-	                    if (currentCell.getCellType() == CellType.STRING) {
-	                        System.out.print(currentCell.getStringCellValue() + "                ");
-	                    } else if (currentCell.getCellType() == CellType.NUMERIC) {
-	                        System.out.print(currentCell.getNumericCellValue() + "          ");
-	                    }
-
-	                }
-	                System.out.println();
-
-	            }
-	        } catch (FileNotFoundException e) {
-	            e.printStackTrace();
-	        } catch (IOException e) {
-	            e.printStackTrace();
-	        }
-		return null;
+	            
+		return "Correct";
 	}
+	
 	
 
 }

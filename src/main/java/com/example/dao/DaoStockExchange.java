@@ -1,8 +1,10 @@
 package com.example.dao;
 
-import org.springframework.web.multipart.MultipartFile;
+import java.util.List;
 
-public interface DaoStockExchange {
+import org.apache.poi.ss.formula.functions.T;
+
+public interface DaoStockExchange<T> {
 	
 	/**
 	 * method to update purchase record of user to database
@@ -37,7 +39,7 @@ public interface DaoStockExchange {
 	/**
 	 * method to uploadRecord of user to database
 	 */
-	public String uploadRecord(MultipartFile file);
+	public String uploadRecord(List<T> values);
 	
 	
 

@@ -33,20 +33,15 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
 
 // @nikhil uncomment it for junit test case this will remove authentication of user	
-//	  @Override
-//      public void configure(HttpSecurity http) throws Exception {
-//           http.authorizeRequests().antMatchers("/**").permitAll();
-//      }
+	  @Override
+      public void configure(HttpSecurity http) throws Exception {
+		  http.authorizeRequests().antMatchers("/**").permitAll();
+		  // to enable post request
+           http.cors().and().csrf().disable();
+      }
 
 	  
 	  
-	@Bean
-	public AuthenticationSuccessHandler myAuthenticationSuccessHandler(){
-		return new MySimpleUrlAuthenticationSuccessHandler();
-	}
-
-	
-	
 	
 	@SuppressWarnings("deprecation")
 	@Bean

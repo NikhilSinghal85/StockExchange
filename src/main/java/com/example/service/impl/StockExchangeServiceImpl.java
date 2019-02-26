@@ -1,5 +1,8 @@
 package com.example.service.impl;
 
+import java.io.IOException;
+import java.io.InputStream;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -9,6 +12,7 @@ import org.springframework.web.multipart.MultipartFile;
 import com.example.dao.DaoStockExchange;
 import com.example.model.ExchangeType;
 import com.example.service.StockExchangeService;
+import com.example.util.CustomPoiReader;
 
 
 /**
@@ -17,11 +21,15 @@ import com.example.service.StockExchangeService;
  *
  */
 @Component
-public class StockExchangeServiceImpl implements StockExchangeService {
+public class StockExchangeServiceImpl<T> implements StockExchangeService {
 
 	
 	@Autowired
 	private DaoStockExchange dataExchangeDao;
+	
+	
+	@Autowired
+	private CustomPoiReader cpr;
 	
 	@Override
 	public String updateBuy(String username, String exchange, String stock, Integer quantity) {
@@ -120,9 +128,19 @@ public class StockExchangeServiceImpl implements StockExchangeService {
 	}
 
 	@Override
-	public String uploadRecord(MultipartFile file) {
-		// TODO Auto-generated method stub
-		return dataExchangeDao.uploadRecord(file);
+	public void uploadRecord(MultipartFile file) {
+
+		InputStream excelFile;
+		try {
+			excelFile = file.getInputStream();
+
+			Class<?> val = cpr.identifyClass();
+			 cpr.readSheet(val, excelFile);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
 	}
 
 }

@@ -1,14 +1,17 @@
 package com.example.config;
 
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.ArrayList;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.RequestMethod;
 
-import springfox.documentation.service.ApiInfo;
-import springfox.documentation.service.Contact;
+import springfox.documentation.builders.PathSelectors;
+import springfox.documentation.builders.RequestHandlerSelectors;
+import springfox.documentation.builders.ResponseMessageBuilder;
+import springfox.documentation.schema.ModelRef;
+import springfox.documentation.service.ResponseMessage;
 import springfox.documentation.spi.DocumentationType;
 import springfox.documentation.spring.web.plugins.Docket;
 import springfox.documentation.swagger2.annotations.EnableSwagger2;
@@ -20,35 +23,40 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 // other file are needed to further fine grain our swagger GUI.
 
 
+
+
+
 @Configuration
 @EnableSwagger2
-public class SwaggerConfig {
+public class SwaggerConfig {                                    
+	private static final String BASE_URL = "/**";
+	private static final String BASE_PACKAGE = "com.example";
 
-	
-	// below all are only to display in swagger GUI we can skip these too.
-	
-  public static final Contact DEFAULT_CONTACT = new Contact(
-      "Nikhil", "http://www.xyz.com", "nikhil@gmail.com");
-  
-  public static final ApiInfo DEFAULT_API_INFO = new ApiInfo(
-      "Available Stock Exchange API's", "These API are available to user to fetch different available Stock for different available options", "1.0",
-      "urn:tos", DEFAULT_CONTACT, 
-      "Apache 2.0", "http://www.apache.org/licenses/LICENSE-2.0");
 
-  
-  private static final Set<String> DEFAULT_PRODUCES = 
-	      new HashSet<String>(Arrays.asList( "application/vnd.ms-excel"));
+	@Bean
+	public Docket api() { 
+		
+		ResponseMessage one = new ResponseMessageBuilder().code(HttpStatus.OK.value()).message("Success").build();
+		ResponseMessage one1 =new ResponseMessageBuilder().code(HttpStatus.INTERNAL_SERVER_ERROR.value()).message("Unexpected error").responseModel(new ModelRef("error")).build();
+		ResponseMessage one2= new ResponseMessageBuilder().code(HttpStatus.NOT_FOUND.value()).message("Resource not found").build();
+		ResponseMessage one3 =new ResponseMessageBuilder().code(HttpStatus.BAD_REQUEST.value()).message("Validation failed").responseModel(new ModelRef("error")).build();
+		
+		ArrayList<ResponseMessage> responseMessages = new ArrayList<ResponseMessage>();
+		responseMessages.add(one);
+		responseMessages.add(one1);
+		responseMessages.add(one2);
+		responseMessages.add(one3);
+		
+		return new Docket(DocumentationType.SWAGGER_2)  
+				.select()                                  
+				.apis(RequestHandlerSelectors.basePackage(BASE_PACKAGE))  
+				.paths(PathSelectors.ant(BASE_URL))                          
+				.build()
+				//.apiInfo(apiInfo())
+				.useDefaultResponseMessages(false)                                   
+				.globalResponseMessage(RequestMethod.GET, responseMessages)
+				.globalResponseMessage(RequestMethod.PUT, responseMessages)
+				.globalResponseMessage(RequestMethod.POST, responseMessages);
 
-  
-  // this populates the Response content type in swagger GUI.
-  private static final Set<String> DEFAULT_CONSUMES = 
-      new HashSet<String>(Arrays.asList( "application/vnd.ms-excel"));
-
-  @Bean
-  public Docket api() {
-    return new Docket(DocumentationType.SWAGGER_2)
-        .apiInfo(DEFAULT_API_INFO)
-        .produces(DEFAULT_PRODUCES)
-        .consumes(DEFAULT_CONSUMES);
-  }
+	}
 }
