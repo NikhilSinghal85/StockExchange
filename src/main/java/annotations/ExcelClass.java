@@ -8,8 +8,8 @@ import java.lang.annotation.Target;
 
 
 @Retention(RetentionPolicy.RUNTIME)
-@Target(ElementType.FIELD)
-public @interface ExcelColumnName {
+@Target(ElementType.TYPE)
+public @interface ExcelClass {
 	
 	 public String name() ;
 }

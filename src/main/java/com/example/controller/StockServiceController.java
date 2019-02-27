@@ -125,9 +125,14 @@ public class StockServiceController {
 	@PostMapping("/upload")
 	public ResponseEntity<?> uploadRecord(@RequestParam(name="reqFile") MultipartFile file) throws IOException {
 		logger.info("uploading ...");
-		stockExchangeService.uploadRecord(file);
+		String result = stockExchangeService.uploadRecord(file);
+		if (result.equals("Invalid File")) {
+			return ResponseEntity.badRequest().build();
+		}
+		else {
+			return ResponseEntity.ok().build();
+		}
 		
-		return ResponseEntity.ok().build();
 	}
 	
 	

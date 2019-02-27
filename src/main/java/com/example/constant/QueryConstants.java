@@ -6,6 +6,10 @@ public class QueryConstants {
 	public final static String  INSERTBUY = "insert into hr.records ( username, exchange_name,stock_name,Stock_number, timestamp, price, buysell ) "
 			+ "values( :username, :exchange, :stock, :amount, CURRENT_TIMESTAMP, :price, :buysell )";
 	
+	
+	public final static String  INSERTEMPLOYEE = "insert into hr.excelemp ( id, firstName, lastName, type ) "
+			+ "values( :id, :firstName, :lastName, :type )";
+	
 	public final static String  INSERTSELL = "insert into hr.records ( username, exchange_name,stock_name,Stock_number, timestamp, price, buysell ) values("
 			+ "	:username, :exchange, :stock, :amount, CURRENT_TIMESTAMP, :price, :buysell )";
 	

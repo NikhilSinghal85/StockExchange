@@ -1,7 +1,9 @@
 package excelPojo;
 
+import annotations.ExcelClass;
 import annotations.ExcelColumnName;
 
+@ExcelClass(name = "Employee")
 public class ExcelEmployee {
 	
 	

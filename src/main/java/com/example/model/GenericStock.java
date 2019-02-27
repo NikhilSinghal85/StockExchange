@@ -57,17 +57,17 @@ public class GenericStock implements StockExchange {
 	
 	
 	
-	@PostConstruct
-	private void dataLoad() {
-		List<Company> lst = namedParameterJdbcTemplate.query("Select * from company ", new CompanyRowMapper());
-		Iterator<Company> itr = lst.iterator();
-		while(itr.hasNext()) {
-			Company c = itr.next(); 
-			myData.add(c);
-			
-		}
-		
-	}
+//	@PostConstruct
+//	private void dataLoad() {
+//		List<Company> lst = namedParameterJdbcTemplate.query("Select * from company ", new CompanyRowMapper());
+//		Iterator<Company> itr = lst.iterator();
+//		while(itr.hasNext()) {
+//			Company c = itr.next(); 
+//			myData.add(c);
+//			
+//		}
+//		
+//	}
 }
 
 

@@ -7,6 +7,8 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
+import javax.annotation.PostConstruct;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,8 +27,8 @@ import com.example.model.StockAvailable;
 import com.example.model.User;
 import com.example.model.UserHistoryValues;
 
-import annotations.ExcelColumnName;
 import excelPojo.ExcelEmployee;
+
 
 /**
  * My comment can move these hard coded maps and string some where else later on
@@ -34,12 +36,12 @@ import excelPojo.ExcelEmployee;
  *
  */
 @Component
-public class DaoStockExchangeImpl<T> implements DaoStockExchange {
+public class DaoStockExchangeImpl implements DaoStockExchange  {
 	
 	private Logger logger = LoggerFactory.getLogger(DaoStockExchangeImpl.class);
 	
+	Map<String, String> map = new HashMap<>();
 	
-	Map <String, ExcelColumnName>  aa =  new HashMap<>(); 
 	
 	@Autowired
 	private NamedParameterJdbcTemplate  namedParameterJdbcTemplate;
@@ -217,11 +219,32 @@ public class DaoStockExchangeImpl<T> implements DaoStockExchange {
 	}
 
 	@Override
-	public String uploadRecord(List values) {
-		
+	public String uploadRecord(Class cls, List values) { 
 		logger.info("in dao impl");
-	            
-		return "Correct";
+		Iterator itr = values.iterator();
+		Map<String, String> jdbcParamsExcelEmployee  = null;
+		while (itr.hasNext()) {
+			Object obj = itr.next();
+			if (obj instanceof ExcelEmployee ) {
+				ExcelEmployee val = (ExcelEmployee) obj;
+				jdbcParamsExcelEmployee = new HashMap<>();
+				jdbcParamsExcelEmployee.put("firstName", ((ExcelEmployee) obj).getFirstName());
+				jdbcParamsExcelEmployee.put("lastName", ((ExcelEmployee) obj).getLastName());
+				jdbcParamsExcelEmployee.put("id", ((ExcelEmployee) obj).getId().toString());
+				jdbcParamsExcelEmployee.put("type", ((ExcelEmployee) obj).getType());
+			}
+		}
+		namedParameterJdbcTemplate.update(map.get(cls.getCanonicalName()), jdbcParamsExcelEmployee);
+	       
+		return "File Uploaded successfully";
+	}
+	
+	@PostConstruct
+	private void dataLoad() {
+		map.put("excelPojo.ExcelEmployee", QueryConstants.INSERTEMPLOYEE);
+		// other class when extebded
+//		jdbcParamsExcelEmployee.put(key, value)
+
 	}
 	
 	

@@ -2,6 +2,7 @@ package com.example.service.impl;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -128,18 +129,26 @@ public class StockExchangeServiceImpl<T> implements StockExchangeService {
 	}
 
 	@Override
-	public void uploadRecord(MultipartFile file) {
+	public String uploadRecord(MultipartFile file) {
 
 		InputStream excelFile;
 		try {
 			excelFile = file.getInputStream();
 
-			Class<?> val = cpr.identifyClass();
-			 cpr.readSheet(val, excelFile);
+			Class<T> val = cpr.identifyClass();
+			 List<T> result =  cpr.readSheet(val, excelFile);
+			 if (result != null) {
+				return dataExchangeDao.uploadRecord(val, result);
+			 }
+			 else {
+				 return "Invalid File";
+			 }
+			 
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		return "Invalid File";
 		
 	}
 
