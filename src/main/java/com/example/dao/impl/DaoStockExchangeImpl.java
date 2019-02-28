@@ -14,6 +14,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
+import org.springframework.jdbc.core.namedparam.SqlParameterSource;
+import org.springframework.jdbc.core.namedparam.SqlParameterSourceUtils;
 import org.springframework.stereotype.Component;
 
 import com.example.constant.QueryConstants;
@@ -220,22 +222,13 @@ public class DaoStockExchangeImpl implements DaoStockExchange  {
 
 	@Override
 	public String uploadRecord(Class cls, List values) { 
+		
 		logger.info("in dao impl");
-		Iterator itr = values.iterator();
-		Map<String, String> jdbcParamsExcelEmployee  = null;
-		while (itr.hasNext()) {
-			Object obj = itr.next();
-			if (obj instanceof ExcelEmployee ) {
-				ExcelEmployee val = (ExcelEmployee) obj;
-				jdbcParamsExcelEmployee = new HashMap<>();
-				jdbcParamsExcelEmployee.put("firstName", ((ExcelEmployee) obj).getFirstName());
-				jdbcParamsExcelEmployee.put("lastName", ((ExcelEmployee) obj).getLastName());
-				jdbcParamsExcelEmployee.put("id", ((ExcelEmployee) obj).getId().toString());
-				jdbcParamsExcelEmployee.put("type", ((ExcelEmployee) obj).getType());
-			}
-		}
-		namedParameterJdbcTemplate.update(map.get(cls.getCanonicalName()), jdbcParamsExcelEmployee);
-	       
+		// use spring utility intead of this code -- done
+		SqlParameterSource[] batch = SqlParameterSourceUtils.createBatch(values.toArray());
+		namedParameterJdbcTemplate.batchUpdate(map.get(cls.getCanonicalName()), batch);
+		
+		System.out.println("File Uploaded successfully");
 		return "File Uploaded successfully";
 	}
 	

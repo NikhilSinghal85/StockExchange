@@ -6,13 +6,10 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
 
-import javax.annotation.PostConstruct;
-
+import org.apache.commons.lang3.reflect.FieldUtils;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.CellType;
 import org.apache.poi.ss.usermodel.Row;
@@ -21,10 +18,6 @@ import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.stereotype.Component;
 
-import com.example.constant.QueryConstants;
-import com.example.mapper.CompanyRowMapper;
-import com.example.model.Company;
-
 import annotations.ExcelColumnName;
 import excelPojo.ExcelEmployee;
 
@@ -32,37 +25,33 @@ import excelPojo.ExcelEmployee;
 @Component
 public class CustomPoiReader<T>  {
 
-	Field[] fileds ;
-	List<T> data = new ArrayList<>();
+	
+	// Should we move these to method since class is singleton -- done	
 	
 	
 	public  List<T> readSheet(Class<T> bean, InputStream excelFile)
 	{
+		List<T> data = new ArrayList<>();
 		try {
 			Workbook workbook = new XSSFWorkbook(excelFile);
 			Sheet datatypeSheet = workbook.getSheetAt(0);
 			
 			Iterator<Row> iterator = datatypeSheet.iterator();
 			Row currentRow = iterator.next();
-			boolean valid = validateColumn(bean, currentRow);
-			if (valid) {
+			Field[] fields  = validateColumn(bean, currentRow);
+			if (fields!= null) {
 				while (iterator.hasNext()) {
 					currentRow = iterator.next();
 					Iterator<Cell> cellIterator = currentRow.iterator();
 						Object obj;
 						try {
-//							String myClass = bean.getName();
-//							int index = myClass.indexOf('.');
-//							if (index != 0) {
-//								myClass = myClass.substring(index + 1);
-//							}
 							obj = Class.forName(bean.getCanonicalName()).getConstructor().newInstance();
 							int count = 0;
 							while (cellIterator.hasNext()) {
 								Cell currentCell = cellIterator.next();
 
 								PropertyDescriptor pd;
-								pd = new PropertyDescriptor(fileds[count].getName(), obj.getClass());
+								pd = new PropertyDescriptor(fields[count].getName(), obj.getClass());
 								if (currentCell.getCellType() == CellType.STRING) { 
 									pd.getWriteMethod().invoke(obj,currentCell.getStringCellValue().trim() ); 
 									count++;
@@ -94,38 +83,47 @@ public class CustomPoiReader<T>  {
 		return data;
 	}
 
-	private boolean validateColumn(	Class<T> bean, Row row) {
+	
+	//Can we use 2 sets/maps for comparison
+	private Field[]  validateColumn(Class<T> bean, Row row) {
 		boolean valid = false;
-		int coumnCount = row.getLastCellNum();
+		Field[] fields = null;
+		Field[]  temp = null;
+		int excelColumnsCount = row.getLastCellNum();
+		try {
+			 fields = FieldUtils.getFieldsWithAnnotation(Class.forName(bean.getCanonicalName()), ExcelColumnName.class);
+			 temp = fields.clone(); 
 
-		fileds = bean.getDeclaredFields();
-		Field[]  temp = fileds.clone(); 
+			//check for only annotated fields  -- done
+			if (excelColumnsCount ==  fields.length) {
 
-		if (coumnCount ==  fileds.length) {
-
-			Iterator<Cell> cellIterator0 = row.iterator();
-			int j = 0;
-			while (cellIterator0.hasNext()) {
-				String val = cellIterator0.next().getStringCellValue();
-				for (int i = 0; i < fileds.length; i++) { 
-					valid = val.equals(fileds[i].getAnnotation(ExcelColumnName.class).name());
-					if (valid)
-					{
-						temp[j] = fileds[i];
-						j ++;
-						break;
+				Iterator<Cell> cellIterator0 = row.iterator();
+				int j = 0;
+				while (cellIterator0.hasNext()) {
+					String val = cellIterator0.next().getStringCellValue();
+					//TODO Can we use java 8 lambda streams?
+					for (int i = 0; i < fields.length; i++) { 
+						valid = val.equals(fields[i].getAnnotation(ExcelColumnName.class).name());
+						if (valid)
+						{
+							temp[j] = fields[i];
+							j ++;
+							break;
+						}
+					}
+					if (!valid) {
+						return null;
 					}
 				}
-				if (!valid) {
-					return false;
-				}
 			}
+			else {
+				return null;
+			}
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
 		}
-		else {
-			return false;
-		}
-		fileds = temp.clone();
-		return valid;
+		fields = temp.clone();
+		return fields;
 	}
 
 

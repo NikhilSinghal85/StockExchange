@@ -135,8 +135,9 @@ public class StockExchangeServiceImpl<T> implements StockExchangeService {
 		try {
 			excelFile = file.getInputStream();
 
-			Class<T> val = cpr.identifyClass();
+		  	Class<T> val = cpr.identifyClass();
 			 List<T> result =  cpr.readSheet(val, excelFile);
+			 
 			 if (result != null) {
 				return dataExchangeDao.uploadRecord(val, result);
 			 }

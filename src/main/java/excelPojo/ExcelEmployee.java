@@ -14,11 +14,16 @@ public class ExcelEmployee {
 	@ExcelColumnName( name = "First Name")
 	private String firstName;
 	
-	@ExcelColumnName( name = "User Id")
+	@ExcelColumnName( name = "User Id1")
 	private Integer id;
 	
 	@ExcelColumnName( name = "Type")
 	private String type;
+	
+	
+	private String extraFiled;
+	
+	public String extraFiled2;
 	
 	
 	public String getLastName() {

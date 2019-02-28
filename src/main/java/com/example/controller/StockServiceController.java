@@ -127,10 +127,10 @@ public class StockServiceController {
 		logger.info("uploading ...");
 		String result = stockExchangeService.uploadRecord(file);
 		if (result.equals("Invalid File")) {
-			return ResponseEntity.badRequest().build();
+			return ResponseEntity.badRequest().body("Excel file is in incorrect format");
 		}
 		else {
-			return ResponseEntity.ok().build();
+			return ResponseEntity.ok().body("Report successfully uploaded");
 		}
 		
 	}
