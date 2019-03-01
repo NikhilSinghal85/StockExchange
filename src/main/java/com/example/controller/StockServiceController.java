@@ -1,6 +1,9 @@
 package com.example.controller;
 
 import java.io.IOException;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.net.URL;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -131,6 +134,26 @@ public class StockServiceController {
 		}
 		else {
 			return ResponseEntity.ok().body("Report successfully uploaded");
+		}
+		
+	}
+	
+	@GetMapping("/download")
+	public ResponseEntity<?> downloadRecord(@RequestParam(name="class") String cls) throws IOException {
+		logger.info("download ...");
+		String result = stockExchangeService.downloadRecord();
+//		URI path = null;
+//		try {
+//			path = new URI(result);
+//		} catch (URISyntaxException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		}
+		if (result.equals("Invalid File")) {
+			return ResponseEntity.badRequest().body("failed");
+		}
+		else {
+			return ResponseEntity.ok().body("File at location:: " +result);
 		}
 		
 	}

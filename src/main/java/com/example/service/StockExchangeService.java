@@ -38,4 +38,9 @@ public interface StockExchangeService {
 	 * method to uploadRecord by swagger only
 	 */
 	public String uploadRecord(MultipartFile file);
+	
+	/**
+	 * method to downloadRecord by swagger only
+	 */
+	public String downloadRecord();
 }

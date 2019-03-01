@@ -41,6 +41,11 @@ public interface DaoStockExchange<T> {
 	 */
 	public String uploadRecord(Class<T> cls, List<T> values);
 	
+	/**
+	 * method to uploadRecord of user to database
+	 */
+	public List<T> downloadRecord(Class<T> cls);
+	
 	
 
 }

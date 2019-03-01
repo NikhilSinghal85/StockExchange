@@ -14,6 +14,9 @@ import com.example.dao.DaoStockExchange;
 import com.example.model.ExchangeType;
 import com.example.service.StockExchangeService;
 import com.example.util.CustomPoiReader;
+import com.example.util.CustomPoiWriter;
+
+import excelPojo.ExcelEmployee;
 
 
 /**
@@ -31,6 +34,9 @@ public class StockExchangeServiceImpl<T> implements StockExchangeService {
 	
 	@Autowired
 	private CustomPoiReader cpr;
+	
+	@Autowired
+	private CustomPoiWriter cpw;
 	
 	@Override
 	public String updateBuy(String username, String exchange, String stock, Integer quantity) {
@@ -151,6 +157,13 @@ public class StockExchangeServiceImpl<T> implements StockExchangeService {
 		}
 		return "Invalid File";
 		
+	}
+
+	@Override
+	public String downloadRecord() {
+		List<T> values = dataExchangeDao.downloadRecord(ExcelEmployee.class);
+		String result = cpw.writeSheet(values);
+		return result;
 	}
 
 }

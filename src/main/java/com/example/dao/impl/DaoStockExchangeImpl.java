@@ -239,6 +239,14 @@ public class DaoStockExchangeImpl implements DaoStockExchange  {
 //		jdbcParamsExcelEmployee.put(key, value)
 
 	}
+
+	@Override
+	public List downloadRecord(Class cls) {
+		
+//		SqlParameterSourceUtils.
+		// TODO Auto-generated method stub
+		return null;
+	}
 	
 	
 
