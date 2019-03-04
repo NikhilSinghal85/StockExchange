@@ -42,5 +42,5 @@ public interface StockExchangeService {
 	/**
 	 * method to downloadRecord by swagger only
 	 */
-	public String downloadRecord();
+	public String downloadRecord(String cls);
 }

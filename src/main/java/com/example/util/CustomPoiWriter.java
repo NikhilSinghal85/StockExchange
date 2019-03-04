@@ -14,6 +14,8 @@ import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.stereotype.Component;
 
+import com.example.model.ExcelEmployee;
+
 @Component
 public class CustomPoiWriter<T> {
 
@@ -26,28 +28,19 @@ public class CustomPoiWriter<T> {
 		XSSFSheet sheet = workbook.createSheet("Employee Details"); 
 
 		// This data needs to be written (Object[]) 
-		Map<String, Object[]> data = new TreeMap<String, Object[]>(); 
-		data.put("1", new Object[]{ "ID", "NAME", "LASTNAME" }); 
-		data.put("2", new Object[]{ 1, "nikhil", "singhal" }); 
-		data.put("3", new Object[]{ 2, "rohit", "gupta" }); 
-		data.put("4", new Object[]{ 3, "chotu", "chotu" }); 
-
-		// Iterate over data and write to sheet 
-		Set<String> keyset = data.keySet(); 
 		int rownum = 0; 
-		for (String key : keyset) { 
+		for (T value : values) {
 			// this creates a new row in the sheet 
 			Row row = sheet.createRow(rownum++); 
-			Object[] objArr = data.get(key); 
-			int cellnum = 0; 
-			for (Object obj : objArr) { 
+			if(value instanceof ExcelEmployee) {
+
+				int cellnum = 0; 
 				// this line creates a cell in the next column of that row 
-				Cell cell = row.createCell(cellnum++); 
-				if (obj instanceof String) 
-					cell.setCellValue((String)obj); 
-				else if (obj instanceof Integer) 
-					cell.setCellValue((Integer)obj); 
-			} 
+				 row.createCell(cellnum++).setCellValue(((ExcelEmployee)value).getUserId()); 
+				 row.createCell(cellnum++).setCellValue(((ExcelEmployee)value).getFirstName()); 
+				 row.createCell(cellnum++).setCellValue(((ExcelEmployee)value).getLastName()); 
+				 row.createCell(cellnum++).setCellValue(((ExcelEmployee)value).getType()); 
+			}
 		} 
 		try { 
 			// this Writes the workbook Download 

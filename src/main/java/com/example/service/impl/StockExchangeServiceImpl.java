@@ -11,12 +11,11 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.example.dao.DaoStockExchange;
+import com.example.model.ExcelEmployee;
 import com.example.model.ExchangeType;
 import com.example.service.StockExchangeService;
 import com.example.util.CustomPoiReader;
 import com.example.util.CustomPoiWriter;
-
-import excelPojo.ExcelEmployee;
 
 
 /**
@@ -159,10 +158,17 @@ public class StockExchangeServiceImpl<T> implements StockExchangeService {
 		
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
-	public String downloadRecord() {
-		List<T> values = dataExchangeDao.downloadRecord(ExcelEmployee.class);
-		String result = cpw.writeSheet(values);
+	public String downloadRecord(String cls) {
+		String result = "";
+		List<T> values = dataExchangeDao.downloadRecord(cls);
+		if (values != null ) {
+			result = cpw.writeSheet(values);
+		}
+		else {
+			return "Invalid File";
+		}
 		return result;
 	}
 

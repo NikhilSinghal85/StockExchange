@@ -20,16 +20,17 @@ import org.springframework.stereotype.Component;
 
 import com.example.constant.QueryConstants;
 import com.example.dao.DaoStockExchange;
+import com.example.mapper.ExcelEmployeeRowMapper;
 import com.example.mapper.HistoryRowMapper;
 import com.example.mapper.StockMapper;
 import com.example.mapper.UserHistoryRowMapper;
 import com.example.mapper.UserRowMapper;
+import com.example.model.ExcelEmployee;
 import com.example.model.History;
 import com.example.model.StockAvailable;
 import com.example.model.User;
 import com.example.model.UserHistoryValues;
-
-import excelPojo.ExcelEmployee;
+import com.example.util.DaoExcelDataFetcher;
 
 
 /**
@@ -38,7 +39,7 @@ import excelPojo.ExcelEmployee;
  *
  */
 @Component
-public class DaoStockExchangeImpl implements DaoStockExchange  {
+public class DaoStockExchangeImpl<T> implements DaoStockExchange<T>  {
 	
 	private Logger logger = LoggerFactory.getLogger(DaoStockExchangeImpl.class);
 	
@@ -241,11 +242,10 @@ public class DaoStockExchangeImpl implements DaoStockExchange  {
 	}
 
 	@Override
-	public List downloadRecord(Class cls) {
+	public List<T> downloadRecord(String cls) {
 		
-//		SqlParameterSourceUtils.
-		// TODO Auto-generated method stub
-		return null;
+		List<T> resultSet = DaoExcelDataFetcher.fetchResult(cls, namedParameterJdbcTemplate);
+		return resultSet;
 	}
 	
 	

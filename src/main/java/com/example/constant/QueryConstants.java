@@ -21,6 +21,8 @@ public class QueryConstants {
 
 //	public final static String  HISTORY = "Select username, AVG (Price) AS average from hr.records where buysell = 'buy' GROUP BY username having average > :average order by average desc";
 	
+	public final static String  FETCHEMPLOYEES  = "Select * from hr.EXCELEMPLOYEE";
+
 	
 	public final static String  HISTORY = "Select * from hr.AvgHistory where average > :average order by average desc";
 	

@@ -18,8 +18,9 @@ import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.stereotype.Component;
 
+import com.example.model.ExcelEmployee;
+
 import annotations.ExcelColumnName;
-import excelPojo.ExcelEmployee;
 
 
 @Component

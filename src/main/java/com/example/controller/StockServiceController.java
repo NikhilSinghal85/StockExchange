@@ -141,7 +141,7 @@ public class StockServiceController {
 	@GetMapping("/download")
 	public ResponseEntity<?> downloadRecord(@RequestParam(name="class") String cls) throws IOException {
 		logger.info("download ...");
-		String result = stockExchangeService.downloadRecord();
+		String result = stockExchangeService.downloadRecord(cls);
 //		URI path = null;
 //		try {
 //			path = new URI(result);
@@ -150,7 +150,7 @@ public class StockServiceController {
 //			e.printStackTrace();
 //		}
 		if (result.equals("Invalid File")) {
-			return ResponseEntity.badRequest().body("failed");
+			return ResponseEntity.badRequest().body("Failed to Download");
 		}
 		else {
 			return ResponseEntity.ok().body("File at location:: " +result);
