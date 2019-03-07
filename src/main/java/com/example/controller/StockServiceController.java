@@ -1,9 +1,9 @@
 package com.example.controller;
 
+import java.io.BufferedReader;
 import java.io.IOException;
-import java.net.URI;
-import java.net.URISyntaxException;
-import java.net.URL;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -14,7 +14,6 @@ import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
@@ -158,5 +157,33 @@ public class StockServiceController {
 		
 	}
 	
+	@GetMapping("/version")
+    public String versionInformation() {
+        return readGitProperties();
+    }
+	
+	
+
+private String readGitProperties() {
+    ClassLoader classLoader = getClass().getClassLoader();
+    InputStream inputStream = classLoader.getResourceAsStream("git.properties");
+    try {
+        return readFromInputStream(inputStream);
+    } catch (IOException e) {
+        e.printStackTrace();
+        return "Version information could not be retrieved";
+    }
+}
+private String readFromInputStream(InputStream inputStream)
+throws IOException {
+    StringBuilder resultStringBuilder = new StringBuilder();
+    try (BufferedReader br = new BufferedReader(new InputStreamReader(inputStream))) {
+        String line;
+        while ((line = br.readLine()) != null) {
+            resultStringBuilder.append(line).append("\n");
+        }
+    }
+    return resultStringBuilder.toString();
+}
 	
 }
